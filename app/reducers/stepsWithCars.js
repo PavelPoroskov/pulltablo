@@ -1,12 +1,17 @@
 //import { UPDATE_ALL, UPDATE_AUTO } from '../constants/ActionTypes'
 
-const initialState =  {
-//    "step02": { 
-//      "a001bc": { autoid: "a001bc", stepid: "01", timestamp: 1002 },
-//      "d007ef": { autoid: "d007ef", stepid: "01", timestamp: 1000 },
-//      "d007ee": { autoid: "d007ee", stepid: "02", timestamp: 1003 }
-//            }
-    }
+// const initialState =  {
+// //    "step02": { 
+// //      "a001bc": { autoid: "a001bc", stepid: "01", timestamp: 1002 },
+// //      "d007ef": { autoid: "d007ef", stepid: "01", timestamp: 1000 },
+// //      "d007ee": { autoid: "d007ee", stepid: "02", timestamp: 1003 }
+// //            }
+//     }
+
+const initialState =  { 
+    "CarIdAndStepId":{}, 
+    "StepIdAndCars":{}
+  }
 
 export default function stepsWithCars(state = initialState, action) {
 
@@ -14,97 +19,105 @@ export default function stepsWithCars(state = initialState, action) {
 
     case 'message':
 
-      let cars = action.data.cars;
+      let newCars = action.data.cars;
 
-      let stepToDo = {};
-      let carToRemove = [];
-      cars.forEach( car => {
+      let oldCarIdAndStepId = state["CarIdAndStepId"] || {};
+      let oldStepIdAndCars = state["StepIdAndCars"] || {};
+
+
+      let stepsToChange = {};
+
+      let arrCarIdToRemoveGlob = [];
+      let objCarIdToChangeGlob = {};
+
+      newCars.forEach( car => {
+        
         if (!car.stepid) {
-          carToRemove.push(car);
+          let oldStepId = oldCarIdAndStepId[car.carid];
+          if (oldStepId) {
+            if (oldStepId in stepsToChange) {
+              stepsToChange.[oldStepId]["remove"].push(car.carid);
+            }else{
+              stepsToChange.[oldStepId] = {"add":{},"remove":[car.carid]};
+            }
+            arrCarIdToRemoveGlob.push(car.carid);
+          }
           return;
         };
-        if (car.stepid in stepToDo) {
-          stepToDo.[car.stepid]["add"].push(car);
-        }else{
-          stepToDo.[car.stepid] = {"add":[car],"remove":[]};
+
+
+        let oldStepId = oldCarIdAndStepId[car.carid];
+        if (oldStepId && car.stepid != oldStepId) {
+          if (oldStepId in stepsToChange) {
+            stepsToChange.[oldStepId]["remove"].push(car.carid);
+          }else{
+            stepsToChange.[oldStepId] = {"add":{},"remove":[car.carid]};
+          }
         }
+
+        if (car.stepid in stepsToChange) {
+//          stepsToChange.[car.stepid]["add"].push(car);
+          stepsToChange.[car.stepid]["add"].[car.carid] = car;
+        }else{
+          stepsToChange.[car.stepid] = {"add": { car.carid: car}, "remove":[]};
+        }
+        objCarIdToChangeGlob[car.carid] = car.stepid;
       } );
 
-      Object.keys(state).forEach( stepid => {
-        carToRemove.forEach( car => {
-          if (car.carid in state[stepid]) {
 
-            if (stepid in stepToDo) {
-              stepToDo.[stepid]["remove"].push(car.carid);
-            }else{
-              stepToDo.[stepid] = {"add":[],"remove":[car.carid]};
-            }
-          }
-        });
+      Object.keys(stepsToChange).forEach( stepidToChange => {
 
-        Object.keys(stepToDo).forEach( stepidAdd => {
-          if (stepidAdd != stepid) {
-            let carToRemove2 = stepToDo.[stepidAdd]["add"];
-            carToRemove2.forEach( car => {
-              if (car.carid in state[stepid]) {
-
-                if (stepid in stepToDo) {
-                  stepToDo.[stepid]["remove"].push(car.carid);
-                }else{
-                  stepToDo.[stepid] = {"add":[],"remove":[car.carid]};
-                }
-              }
-            });
-          }
-        });
-      });
-
-
-
-      Object.keys(stepToDo).forEach( stepidToDo => {
-
-        let arrToRemove = stepToDo[stepidToDo]["remove"];
-        let arrToAdd = stepToDo[stepidToDo]["add"];
+        let arrCarIdToRemove = stepsToChange[stepidToChange]["remove"];
+        let objCarsToAdd = stepsToChange[stepidToChange]["add"];
 
         let carsFiltered = {};
-        if (stepidToDo in state) {
+        if (stepidToChange in oldStepIdAndCars && arrCarIdToRemove) {
 //          cars = { ...state[stepidToDo] };
-          let cars0 = state[stepidToDo];
+          let oldCars = oldStepIdAndCars[stepidToChange];
 
-          if (arrToRemove) {        
-            let arrCarsId = Object.keys(cars0).filter( carid => !arrToRemove.includes(carid) );
+          if (arrCarIdToRemove) {        
+            let arrCarsId = Object.keys(oldCars).filter( carid => !arrCarIdToRemove.includes(carid) );
 
             carsFiltered = arrCarsId.reduce( (objSum,carid) => {
                                           objSum[carid] = cars0[carid];
                                           return objSum
                                         }, {} );
-          }else{
-//            cars = {...cars0};
-            carsFiltered = cars0;
-          };
         };
 
-        let cars = carsFiltered;
-        if (arrToAdd) {        
-          let carsAdd = arrToAdd.reduce( (objSum,car) => {
-                                        objSum[car.carid] = car;
-                                        return objSum
-                                      }, {} );
-          cars = {...carsFiltered, ...carsAdd};
-        };
-
+        let newCars = {};
+        if (arrCarIdToRemove && objCarsToAdd) {        
+          newCars = {...carsFiltered, ...objCarsToAdd};
+        }else if (objCarsToAdd) {
+          let oldCars = oldStepIdAndCars[stepidToChange];
+          newCars = {...oldCars, ...objCarsToAdd};
+        }else{
+          newCars = carsFiltered;
+        }
 
 //        newStateAdd = { ...newStateAdd, stepidToDo: cars };
-        stepToDo[stepidToDo]["cars"] = cars;
+        stepsToChange[stepidToChange]["newCars"] = newCars;
       });
 
-      let newStateAdd = Object.keys(stepToDo).reduce( (objSum,stepToDoId) => {
-                                    objSum[stepToDoId] = stepToDo[stepToDoId]["cars"];
+      let StepIdAndCarsAdd = Object.keys(stepsToChange).reduce( (objSum,stepidToChange) => {
+                                    objSum[stepidToChange] = stepToDo[stepidToChange]["newCars"];
                                     return objSum
                                   }, {} );
-      let newState = { ...state, ...newStateAdd };
+      let StepIdAndCars = { ...oldStepIdAndCars, ...StepIdAndCarsAdd };
 
-      return newState;
+
+      let CarIdAndStepId = {};
+      if (arrCarIdToRemoveGlob) {
+        let arrCarsId = Object.keys(oldStepIdAndCars).filter( carid => !arrCarIdToRemoveGlob.includes(carid) );
+        let arrCarsIdFiltered = arrCarsId.map( carid => oldStepIdAndCars[carid] );
+        CarIdAndStepId = { ...arrCarsIdFiltered, ...objCarIdToChangeGlob };
+      }else{
+        CarIdAndStepId = { ...oldStepIdAndCars, ...objCarIdToChangeGlob };
+      }
+
+      return { 
+        CarIdAndStepId, 
+        StepIdAndCars
+        };
 
     default:
       return state
