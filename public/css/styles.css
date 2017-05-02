@@ -1,0 +1,29 @@
+/* everywhere else */
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+
+table { 
+  width: 100%; /* Ширина таблицы */
+//  border: 4px double black; /* Рамка вокруг таблицы */
+  border-collapse: collapse; /* Отображать только одинарные линии */
+}
+td, th {
+  border: 1px solid #999;
+  padding: 0.5rem;
+}
+
+th { 
+  background: #ccc; /* Цвет фона ячеек */
+}
+
+//tbody tr:nth-child(odd) {
+//  background: #eee;
+//}
+
+//col:nth-child(2) {
+//  background: yellow; 
+//}

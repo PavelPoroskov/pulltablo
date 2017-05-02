@@ -1,0 +1,6 @@
+public/js/
+node_modules/
+result.db.json
+test.db.json
+cmd.bat
+Send_1c_http.epf
