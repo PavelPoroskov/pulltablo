@@ -10,23 +10,34 @@ export default function autosById(state = initialState, action) {
 
   switch (action.type) {
 
-    case 'message':
+    case 'message_fullstate':
 
-      let autosById = action.data.cars.reduce( (obj, item) => {
-        obj[item.id] = item.stepid ? item : undefined;
-        return obj
-      }, {});
+      // let autosById = action.data.cars.reduce( (obj, item) => {
+      //   obj[item.id] = item.stepid ? item : undefined;
+      //   return obj
+      // }, {});
 
-//      if (action.data.isfullstate) {
-      if (action.data.steps) {
-        return autosById;
-      };
+      // return autosById;
+
+      return action.data.cars;
+
+    case 'message_update':
+
+      // let autosById = action.data.cars.reduce( (obj, item) => {
+      //   obj[item.id] = item.stepid ? item : undefined;
+      //   return obj
+      // }, {});
+
+      // return {
+      //     ...state, 
+      //     ...autosById
+      //   };
 
       return {
           ...state, 
-          ...autosById
+          ...action.data.cars
         };
-
+        
     default:
       return state
   }

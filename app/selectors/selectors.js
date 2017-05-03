@@ -135,10 +135,11 @@ const inp_sel_EmptySel = (state) => state.emptyCell;
 
 const getColumns = (stepsById) => sortBy( stepsById, ['id'] );
 
-export const selColumnHead = createSelector(
-	[inp_sel_Steps],
-	getColumns
-	);
+// export const selColumnHead = createSelector(
+// 	[inp_sel_Steps],
+// 	getColumns
+// 	);
+export const selColumnHead = (state) => state.stepsById;
 
 const getRows = ( steps_ArrSorted, autosById, emptyCell ) => {
 
@@ -148,7 +149,7 @@ const getRows = ( steps_ArrSorted, autosById, emptyCell ) => {
 	let nRows = Math.max( ...( _map( autosById_gr, autos => autos.length ) ) );
 
 	let rowsAr = [];
-	let columns = steps_ArrSorted.map( step => autosById_gr[step.id] );
+	let columns = steps_ArrSorted.map( step => autosById_gr[step.stepid] );
 	for (var i=0; i < nRows; i++ ) {
 
 //		rowsAr.push( columns.map(col => col[i]) );

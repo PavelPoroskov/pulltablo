@@ -19,7 +19,8 @@ const db = low('test.db.json');
 const db_result = low('result.db.json');
 
 ////db.defaults({ cars: {}, steps: {}, managers: {} }).value();
-db.setState({ cars: {}, steps: {}, managers: {} });
+//db.setState({ cars: {}, steps: {}, managers: {} });
+db.setState({ cars: {}, steps: [], managers: {} });
 
 
 //import express from 'express';
@@ -79,64 +80,16 @@ var jsonParser = bodyParser.json();
 
 appExp.post('/publish_fullstate', jsonParser, function(req, res) {
 //  console.log('Request: [POST]', req.body );
-  console.log('Request: [POST]' );
+  console.log('Request publish_fullstate: [POST]' );
   console.log( req.body );
 //  res.send('Ok Got a POST request');
   
   let obj = req.body;
 
-  if (obj.steps) {
-    let db_steps = db.get('steps');
-
-    obj.steps.forEach( step => { 
-      db_steps.set( step.id, step ).value();
-    } );
-  };
-
-  let db_cars = db.get('cars');
-//  let obj_updates = {cars:{}};
-//  let obj_cars = obj_updates.cars;
-  obj.cars.forEach( car => { 
-//    console.log( car );
-    if (car.stepid) {
-      db_cars.set( car.id, car ).value();
-    }else{
-//      db_cars.remove( { id: car.id } ).value();
-      console.log( "remove " );
-      console.log( car.id );
-//      db_cars.remove( { "id": car.id } ).value();
-      db_cars.unset( car.id ).value();
-    };
-
-//     obj_cars[car.id] = car;
-  } );
+  db.set('steps', obj.steps ).write();
+  db.set('cars', obj.cars ).write();
 
 
-//  console.log('Request: 2' );
-
-//  let data;
-/*
-  let msg;
-  if (obj.steps) {
-    let curState = db.getState();
-//    data = JSON.stringify(curState);
-    let cars = curState.cars;
-    let arrCars = [];
-    Object.keys(cars).forEach( carId => { 
-      if (cars[carId].stepid) {
-        arrCars.push(cars[carId]);
-      }
-    } );
-    let steps = curState.steps;
-    let arrSteps = Object.keys(steps).map( stepId => steps[stepId] );
-    let data = {cars:arrCars, steps: arrSteps};
-    msg = JSON.stringify({ for: 'everyone', type: 'message', data: data });
-  }else{
-//    data = JSON.stringify(obj);
-    msg = JSON.stringify({ for: 'everyone', type: 'message', data: obj });
-  };
-*/
-//  appIo.emit('action', msg);
   appIo.emit('action', { for: 'everyone', type: 'message_fullstate', data: obj });
   console.log( "broadcast " );
 
@@ -145,64 +98,30 @@ appExp.post('/publish_fullstate', jsonParser, function(req, res) {
 
 appExp.post('/publish_update', jsonParser, function(req, res) {
 //  console.log('Request: [POST]', req.body );
-  console.log('Request: [POST]' );
+  console.log('Request: publish_update [POST]' );
   console.log( req.body );
 //  res.send('Ok Got a POST request');
   
-  let obj = req.body;
-
-  if (obj.steps) {
-    let db_steps = db.get('steps');
-
-    obj.steps.forEach( step => { 
-      db_steps.set( step.id, step ).value();
-    } );
-  };
+  let cars = req.body.cars;
 
   let db_cars = db.get('cars');
-//  let obj_updates = {cars:{}};
-//  let obj_cars = obj_updates.cars;
-  obj.cars.forEach( car => { 
+
+//  obj.cars.forEach( car => { 
+  Object.keys(cars).forEach( carid => { 
+    let car = cars[carid];
 //    console.log( car );
     if (car.stepid) {
-      db_cars.set( car.id, car ).value();
+      db_cars.set( carid, car ).value();
     }else{
 //      db_cars.remove( { id: car.id } ).value();
       console.log( "remove " );
-      console.log( car.id );
+      console.log( carid );
 //      db_cars.remove( { "id": car.id } ).value();
-      db_cars.unset( car.id ).value();
+      db_cars.unset( carid ).value();
     };
 
-//     obj_cars[car.id] = car;
-  } );
+  });
 
-
-//  console.log('Request: 2' );
-
-//  let data;
-/*
-  let msg;
-  if (obj.steps) {
-    let curState = db.getState();
-//    data = JSON.stringify(curState);
-    let cars = curState.cars;
-    let arrCars = [];
-    Object.keys(cars).forEach( carId => { 
-      if (cars[carId].stepid) {
-        arrCars.push(cars[carId]);
-      }
-    } );
-    let steps = curState.steps;
-    let arrSteps = Object.keys(steps).map( stepId => steps[stepId] );
-    let data = {cars:arrCars, steps: arrSteps};
-    msg = JSON.stringify({ for: 'everyone', type: 'message', data: data });
-  }else{
-//    data = JSON.stringify(obj);
-    msg = JSON.stringify({ for: 'everyone', type: 'message', data: obj });
-  };
-*/
-//  appIo.emit('action', msg);
   appIo.emit('action', { for: 'everyone', type: 'message_update', data: obj });
   console.log( "broadcast " );
 
@@ -249,7 +168,7 @@ appIo.on('connection', function(socket){
       let arrSteps = Object.keys(steps).map( stepId => steps[stepId] );
       let data = {cars:arrCars, steps: arrSteps};
 
-      socket.emit('action', {type:'message', data: data} );
+      socket.emit('action', {type:'message_fullstate', data: data} );
     }
   });
 

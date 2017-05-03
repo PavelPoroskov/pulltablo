@@ -13,26 +13,38 @@ const initialState =  {
     "StepIdAndCars":{}
   }
 
-function calculate(oldCarIdAndStepId, oldStepIdAndCars,newCars) {
+function calculateS(oldCarIdAndStepId, oldStepIdAndCars,newCars) {
 
   let stepsToChange = {};
 
-//      let arrCarIdToRemoveGlob = [];
-  let objCarIdToChangeGlob = {};
+// //      let arrCarIdToRemoveGlob = [];
+   let objCarIdToChangeGlob = {};
 
-  newCars.forEach( car => {
+//   newCars.forEach( car => {
     
-    if (!car.stepid) {
-      let oldStepId = oldCarIdAndStepId[car.carid];
+
+  Object.keys(newCars).forEach( carid => {
+    let car = newCars[carid];
+
+    // if (!car.stepid) {
+    //   objCarIdToChangeGlob[car.carid] = "";
+    if (!car) {
+      objCarIdToChangeGlob[carid] = "";
+    }else{
+      objCarIdToChangeGlob[carid] = car.stepid;
+    }
+
+//    if (!car.stepid) {
+    if (!car) {
+      let oldStepId = oldCarIdAndStepId[carid];
       if (oldStepId) {
         if (oldStepId in stepsToChange) {
-          stepsToChange.[oldStepId]["remove"].push(car.carid);
+          stepsToChange.[oldStepId]["remove"].push(carid);
         }else{
-          stepsToChange.[oldStepId] = {"add":{},"remove":[car.carid]};
+          stepsToChange.[oldStepId] = {"add":{},"remove":[carid]};
         }
 //            arrCarIdToRemoveGlob.push(car.carid);
       }
-      objCarIdToChangeGlob[car.carid] = "";
       return;
     };
 
@@ -52,7 +64,6 @@ function calculate(oldCarIdAndStepId, oldStepIdAndCars,newCars) {
     }else{
       stepsToChange.[car.stepid] = {"add": { car.carid: car}, "remove":[]};
     }
-    objCarIdToChangeGlob[car.carid] = car.stepid;
   } );
 
 
@@ -70,9 +81,10 @@ function calculate(oldCarIdAndStepId, oldStepIdAndCars,newCars) {
         let arrCarsId = Object.keys(oldCars).filter( carid => !arrCarIdToRemove.includes(carid) );
 
         carsFiltered = arrCarsId.reduce( (objSum,carid) => {
-                                      objSum[carid] = cars0[carid];
+                                      objSum[carid] = oldCars[carid];
                                       return objSum
                                     }, {} );
+      };
     };
 
     let newCars = {};
@@ -124,7 +136,7 @@ export default function stepsWithCars(state = initialState, action) {
       let oldCarIdAndStepId = {};
       let oldStepIdAndCars = {};
 
-      return calculate( oldCarIdAndStepId, oldStepIdAndCars, newCars);
+      return calculateS( oldCarIdAndStepId, oldStepIdAndCars, newCars);
 
     case 'message_update':
 
@@ -133,7 +145,7 @@ export default function stepsWithCars(state = initialState, action) {
       let oldCarIdAndStepId = state["CarIdAndStepId"] || {};
       let oldStepIdAndCars = state["StepIdAndCars"] || {};
 
-      return calculate( oldCarIdAndStepId, oldStepIdAndCars, newCars);
+      return calculateS( oldCarIdAndStepId, oldStepIdAndCars, newCars);
       
     default:
       return state
