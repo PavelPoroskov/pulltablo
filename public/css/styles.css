@@ -3,9 +3,6 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
-
-
 table { 
   width: 100%; /* Ширина таблицы */
 //  border: 4px double black; /* Рамка вокруг таблицы */
@@ -16,8 +13,67 @@ td, th {
   padding: 0.5rem;
 }
 
+/* Цвет фона ячеек */
+/*
 th { 
-  background: #ccc; /* Цвет фона ячеек */
+  background: #ccc; 
+}
+*/
+
+
+/* Ожидание автомобиля */
+.HeadCell_00_1 {
+//  background: yellow;
+}
+/* Приемка */
+.HeadCell_01_1 {
+  background: #00FF00;
+}
+/* Мойка (ожидание) */
+.HeadCell_02_0 {
+  background: lightpink;
+}
+/* Мойка */
+.HeadCell_02_1 {
+  background: #6495ED;
+}
+/* Прямая приемка (ожидание) */
+.HeadCell_04_0 {
+  background: lightpink;;
+}
+/* Прямая приемка */
+.HeadCell_04_1 {
+  background: #32CD32;
+}
+/* Выполнение работ (ожидание) */
+.HeadCell_05_0 {
+  background: lightpink;
+}
+/* Выполнение работ */
+.HeadCell_05_1 {
+//  background: #BA55D3;
+//	background: #DB7093;
+	background: #DA70D6;
+}
+/* Контроль качества (ожидание) */
+.HeadCell_06_0 {
+  background: lightpink;
+}
+/* Контроль качества */
+.HeadCell_06_1 {
+  background: #DAA520;
+}
+/* Подготовка документов */
+.HeadCell_07_1 {
+  background: #B0E0E6;
+}
+/* Выдача (ожидание) */
+.HeadCell_08_0 {
+  background: yellow;
+}
+/* Выдача */
+.HeadCell_08_1 {
+  background: #B0E0E6;
 }
 
 //tbody tr:nth-child(odd) {

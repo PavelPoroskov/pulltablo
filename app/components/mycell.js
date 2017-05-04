@@ -4,8 +4,9 @@ import pure from 'recompose/pure';
 const MyCell = ({auto}) => {
   console.log("Rendering MyCell");
   return (
-    <td key={auto.id}>
-      {auto.id}
+//    <td key={auto.carid}>
+    <td>
+      {auto.carid}
     </td>
   )
 };

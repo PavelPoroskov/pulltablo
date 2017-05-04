@@ -10,6 +10,7 @@ const MyRow = ({row}) => {
   	let cells = row.map( (auto,index) => {
   		return (
         <MyCell auto={auto} key={index}/>
+//        <MyCell auto={auto}/>
   		)
   	});
 

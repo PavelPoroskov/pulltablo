@@ -9,8 +9,8 @@ const MyTableHead = ({steps}) => {
     	<tr>
     	{steps.map( step => {
             return (
-              <th key={step.id}>
-                {step.title}
+              <th key={step.stepid} className={step.classCSS}>
+                {step.name}
               </th>
             );
           })}

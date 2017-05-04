@@ -16,7 +16,7 @@ var bodyParser = require('body-parser');
 
 const low = require('lowdb');
 const db = low('test.db.json');
-const db_result = low('result.db.json');
+//const db_result = low('result.db.json');
 
 ////db.defaults({ cars: {}, steps: {}, managers: {} }).value();
 //db.setState({ cars: {}, steps: {}, managers: {} });
@@ -78,7 +78,7 @@ appExp.get('/', function(req, res, next) {
 var jsonParser = bodyParser.json();
 
 
-appExp.post('/publish_fullstate', jsonParser, function(req, res) {
+appExp.post('/publish-fullstate', jsonParser, function(req, res) {
 //  console.log('Request: [POST]', req.body );
   console.log('Request publish_fullstate: [POST]' );
   console.log( req.body );
@@ -86,8 +86,18 @@ appExp.post('/publish_fullstate', jsonParser, function(req, res) {
   
   let obj = req.body;
 
-  db.set('steps', obj.steps ).write();
-  db.set('cars', obj.cars ).write();
+  console.log( 'obj.steps ' );
+  console.log( obj.steps );
+
+  console.log( 'obj.cars ' );
+  console.log( obj.cars );
+
+//  db.set('steps', obj.steps ).write();
+//  db.set('cars', obj.cars ).write();
+
+  db.set('steps', obj.steps ).value();
+  db.set('cars', obj.cars ).value();
+//  db.setState({ cars: obj.cars, steps: obj.steps, managers: {} });
 
 
   appIo.emit('action', { for: 'everyone', type: 'message_fullstate', data: obj });
@@ -96,12 +106,13 @@ appExp.post('/publish_fullstate', jsonParser, function(req, res) {
   res.send('Ok Got a POST request');
 });
 
-appExp.post('/publish_update', jsonParser, function(req, res) {
+appExp.post('/publish-update', jsonParser, function(req, res) {
 //  console.log('Request: [POST]', req.body );
   console.log('Request: publish_update [POST]' );
   console.log( req.body );
 //  res.send('Ok Got a POST request');
   
+  let obj = req.body;
   let cars = req.body.cars;
 
   let db_cars = db.get('cars');
@@ -109,8 +120,8 @@ appExp.post('/publish_update', jsonParser, function(req, res) {
 //  obj.cars.forEach( car => { 
   Object.keys(cars).forEach( carid => { 
     let car = cars[carid];
-//    console.log( car );
-    if (car.stepid) {
+    console.log( carid );
+    if (car) {
       db_cars.set( carid, car ).value();
     }else{
 //      db_cars.remove( { id: car.id } ).value();
@@ -122,6 +133,7 @@ appExp.post('/publish_update', jsonParser, function(req, res) {
 
   });
 
+//  console.log( "broadcast " );
   appIo.emit('action', { for: 'everyone', type: 'message_update', data: obj });
   console.log( "broadcast " );
 
@@ -153,7 +165,7 @@ appIo.on('connection', function(socket){
     if(action.type === 'server/subscribe_for_post'){
 
     } else if(action.type === 'server/subscribe'){
-      console.log('Got hello data!', action.data);
+//      console.log('Got hello data!', action.data);
 
 //      socket.emit('action', {type:'message', data:'good day!'});
       let curState = db.getState();

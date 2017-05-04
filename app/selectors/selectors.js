@@ -153,7 +153,8 @@ const getRows = ( steps_ArrSorted, autosById, emptyCell ) => {
 	for (var i=0; i < nRows; i++ ) {
 
 //		rowsAr.push( columns.map(col => col[i]) );
-		rowsAr.push( columns.map( col => col[i] ? col[i] : emptyCell ) );
+//		rowsAr.push( columns.map( col => col[i] ? col[i] : emptyCell ) );
+		rowsAr.push( columns.map( col => col && col[i] ? col[i] : emptyCell ) );
 	};
 	return rowsAr;
 }

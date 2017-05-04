@@ -22,6 +22,7 @@ export default function autosById(state = initialState, action) {
       return action.data.cars;
 
     case 'message_update':
+//      console.log( "autosById() message_update" );
 
       // let autosById = action.data.cars.reduce( (obj, item) => {
       //   obj[item.id] = item.stepid ? item : undefined;
@@ -37,7 +38,7 @@ export default function autosById(state = initialState, action) {
           ...state, 
           ...action.data.cars
         };
-        
+      
     default:
       return state
   }
