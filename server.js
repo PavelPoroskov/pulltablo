@@ -89,6 +89,7 @@ appExp.post('/publish-fullstate', jsonParser, function(req, res) {
   
   let obj = req.body;
   time_fullstate_1c = obj.time_fullstate_1c;
+  time_update_1c = time_fullstate_1c;
 //  console.log( 'obj.steps ' );
 //  console.log( obj.steps );
 
