@@ -45,8 +45,11 @@ var appIo = require('socket.io')(http);
 
 
 
-var timeFullState_1c;
-var timeFullState_server;
+var time_fullstate_1c;
+var time_fullstate_io;
+var time_update_1c;
+var time_update_io;
+
 
 appExp.use(express.static(path.join(__dirname, 'public'), {
   dotfiles: 'ignore',
@@ -85,12 +88,12 @@ appExp.post('/publish-fullstate', jsonParser, function(req, res) {
 //  res.send('Ok Got a POST request');
   
   let obj = req.body;
+  time_fullstate_1c = obj.time_fullstate_1c;
+//  console.log( 'obj.steps ' );
+//  console.log( obj.steps );
 
-  console.log( 'obj.steps ' );
-  console.log( obj.steps );
-
-  console.log( 'obj.cars ' );
-  console.log( obj.cars );
+//  console.log( 'obj.cars ' );
+//  console.log( obj.cars );
 
 //  db.set('steps', obj.steps ).write();
 //  db.set('cars', obj.cars ).write();
@@ -100,10 +103,14 @@ appExp.post('/publish-fullstate', jsonParser, function(req, res) {
 //  db.setState({ cars: obj.cars, steps: obj.steps, managers: {} });
 
 
+//  time_fullstate_io = new Date();
+
   appIo.emit('action', { for: 'everyone', type: 'message_fullstate', data: obj });
   console.log( "broadcast " );
 
   res.send('Ok Got a POST request');
+
+//  time_fullstate_io = Date.now();
 });
 
 appExp.post('/publish-update', jsonParser, function(req, res) {
@@ -113,6 +120,19 @@ appExp.post('/publish-update', jsonParser, function(req, res) {
 //  res.send('Ok Got a POST request');
   
   let obj = req.body;
+
+  if ( ! (obj.time_fullstate_1c==time_fullstate_1c) ) {
+    //need fullstate
+//    res.send('Ok Got a POST request');
+//      return;
+  };
+  if ( ! (obj.time_update_1c_prev==time_update_1c) ) {
+    //need fullstate
+//    res.send('Ok Got a POST request');
+//      return;
+  };
+  time_update_1c = obj.time_update_1c;
+
   let cars = req.body.cars;
 
   let db_cars = db.get('cars');
@@ -133,9 +153,14 @@ appExp.post('/publish-update', jsonParser, function(req, res) {
 
   });
 
-//  console.log( "broadcast " );
-  appIo.emit('action', { for: 'everyone', type: 'message_update', data: obj });
-  console.log( "broadcast " );
+  // time_update_io = new Date();
+
+  // if (time_fullstate_io < time_update_io && () ) {
+    appIo.emit('action', { for: 'everyone', type: 'message_update', data: obj });
+    console.log( "broadcast " );
+  // }else{
+  //   //headers: need full state
+  // };
 
   res.send('Ok Got a POST request');
 });
@@ -161,35 +186,37 @@ appExp.use(function(err, req, res, next) {
 appIo.on('connection', function(socket){
   console.log("Socket connected: " + socket.id);
 
-  socket.on('action', (action) => {
-    if(action.type === 'server/subscribe_for_post'){
+  // socket.on('action', (action) => {
+  //   console.log("socket on action " + action.type);
 
-    } else if(action.type === 'server/subscribe'){
-//      console.log('Got hello data!', action.data);
+  //   if(action.type === 'server/subscribe_for_post'){
 
-//      socket.emit('action', {type:'message', data:'good day!'});
-      let curState = db.getState();
-      // let cars = curState.cars;
-      // let arrCars = [];
-      // Object.keys(cars).forEach( carId => { 
-      //   if (cars[carId].stepid) {
-      //     arrCars.push(cars[carId]);
-      //   }
-      // } );
-      // let steps = curState.steps;
-      // let arrSteps = Object.keys(steps).map( stepId => steps[stepId] );
-      // let data = {cars:arrCars, steps: arrSteps};
+  //   } else if(action.type === 'server/subscribe'){
 
-      // socket.emit('action', {type:'message_fullstate', data: data} );
-      socket.emit('action', {type:'message_fullstate', data: curState} );
-    }
-  });
+  //     let curState = db.getState();
+  //     socket.emit('action', {type:'message_fullstate', data: curState} );
+  //   }
+  // });
+
+  let curState = db.getState();
+  socket.emit('action', {type:'message_fullstate', data: curState} );
+
+  // socket.on('reconnect', function(){
+  //     console.log("socket on reconnect");
+
+  //     let curState = db.getState();
+  //     socket.emit('action', {type:'message_fullstate', data: curState} );
+  // });
 
   socket.on('disconnect', function(){
 //      Clients.remove(clientId);
       console.log('user disconnected');
   });
 });
+
+// appIo.on('connection', function(socket){ 
+//   console.log("Socket REconnected: " + socket.id);
+// });
 
 /**
  * Start Server
