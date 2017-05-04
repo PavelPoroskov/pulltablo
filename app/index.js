@@ -17,7 +17,10 @@ import reducer from './reducers';
 //import 'todomvc-app-css/index.css'
 
 //const store = createStore(reducer,applyMiddleware(socketIoMiddleware));
-let store = applyMiddleware(socketIoMiddleware)(createStore)(reducer);
+//let store = applyMiddleware(socketIoMiddleware)(createStore)(reducer);
+let store = createStore(reducer, applyMiddleware(socketIoMiddleware) );
+
+//store.dispatch({type:'server/subscribe'});
 
 render(
   <Provider store={store}>
@@ -29,4 +32,5 @@ render(
 //store.subscribe(()=>{
 //  console.log('new client state', store.getState());
 //});
+
 store.dispatch({type:'server/subscribe'});

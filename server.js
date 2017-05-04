@@ -169,18 +169,19 @@ appIo.on('connection', function(socket){
 
 //      socket.emit('action', {type:'message', data:'good day!'});
       let curState = db.getState();
-      let cars = curState.cars;
-      let arrCars = [];
-      Object.keys(cars).forEach( carId => { 
-        if (cars[carId].stepid) {
-          arrCars.push(cars[carId]);
-        }
-      } );
-      let steps = curState.steps;
-      let arrSteps = Object.keys(steps).map( stepId => steps[stepId] );
-      let data = {cars:arrCars, steps: arrSteps};
+      // let cars = curState.cars;
+      // let arrCars = [];
+      // Object.keys(cars).forEach( carId => { 
+      //   if (cars[carId].stepid) {
+      //     arrCars.push(cars[carId]);
+      //   }
+      // } );
+      // let steps = curState.steps;
+      // let arrSteps = Object.keys(steps).map( stepId => steps[stepId] );
+      // let data = {cars:arrCars, steps: arrSteps};
 
-      socket.emit('action', {type:'message_fullstate', data: data} );
+      // socket.emit('action', {type:'message_fullstate', data: data} );
+      socket.emit('action', {type:'message_fullstate', data: curState} );
     }
   });
 

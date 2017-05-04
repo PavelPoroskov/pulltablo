@@ -29,16 +29,20 @@ export default function autosById(state = initialState, action) {
       //   return obj
       // }, {});
 
-      // return {
-      //     ...state, 
-      //     ...autosById
-      //   };
+       return {
+           ...state, 
+           ...action.data.cars
+         };
 
-      return {
-          ...state, 
-          ...action.data.cars
-        };
+      // let res = {
+      //     ...state, 
+      //     ...action.data.cars
+      //   };
       
+      // console.log(res);
+
+      // return res;
+
     default:
       return state
   }
