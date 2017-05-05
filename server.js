@@ -45,10 +45,10 @@ var appIo = require('socket.io')(http);
 
 
 
-var time_fullstate_1c;
-var time_fullstate_io;
-var time_update_1c;
-var time_update_io;
+var time_fullstate;
+//var time_fullstate_io;
+var time_update;
+//var time_update_io;
 
 
 appExp.use(express.static(path.join(__dirname, 'public'), {
@@ -88,8 +88,8 @@ appExp.post('/publish-fullstate', jsonParser, function(req, res) {
 //  res.send('Ok Got a POST request');
   
   let obj = req.body;
-  time_fullstate_1c = obj.time_fullstate_1c;
-  time_update_1c = time_fullstate_1c;
+  time_fullstate = obj.time_fullstate;
+  time_update = time_fullstate;
 //  console.log( 'obj.steps ' );
 //  console.log( obj.steps );
 
@@ -122,17 +122,17 @@ appExp.post('/publish-update', jsonParser, function(req, res) {
   
   let obj = req.body;
 
-  if ( ! (obj.time_fullstate_1c==time_fullstate_1c) ) {
+  if ( ! (obj.time_fullstate==time_fullstate) ) {
     //need fullstate
 //    res.send('Ok Got a POST request');
 //      return;
   };
-  if ( ! (obj.time_update_1c_prev==time_update_1c) ) {
+  if ( ! (obj.time_update_prev==time_update) ) {
     //need fullstate
 //    res.send('Ok Got a POST request');
 //      return;
   };
-  time_update_1c = obj.time_update_1c;
+  time_update = obj.time_update;
 
   let cars = req.body.cars;
 

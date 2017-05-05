@@ -1,0 +1,17 @@
+
+detect disconnect on client
+	change background to dim
+
+	connect => Un (change background to dim)
+
+
+animate new step for car
+	blink 3 time, green
+	solid thick green border
+	un
+
+
+in table nabour head cell
+	|   working (purpl)       |
+	|-------------------------|
+	| wait(light) |  (purpl)  |
