@@ -29,6 +29,16 @@ export default function autosById(state = initialState, action) {
       //   return obj
       // }, {});
 
+      // let cars = action.data.cars;
+      // Object.keys(cars).forEach( carid => {
+      //   let car = cars[carid];
+      //   if (car) {
+      //     car["time_update"] = new Date(car["time_update"]);
+      //   }
+      // });
+
+//      console.log(action.data.cars);
+
        return {
            ...state, 
            ...action.data.cars

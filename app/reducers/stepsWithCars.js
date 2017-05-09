@@ -8,10 +8,11 @@
 // //            }
 //     }
 
-const initialState =  { 
+const initialState0 =  { 
     "CarIdAndStepId":{}, 
     "StepIdAndCars":{}
   }
+
 
 function calculateS(oldCarIdAndStepId, oldStepIdAndCars,newCars) {
 
@@ -125,7 +126,7 @@ function calculateS(oldCarIdAndStepId, oldStepIdAndCars,newCars) {
 
 }
 
-export default function stepsWithCars(state = initialState, action) {
+export default function stepsWithCars0(state = initialState0, action) {
 
   switch (action.type) {
 
@@ -146,6 +147,146 @@ export default function stepsWithCars(state = initialState, action) {
       let oldStepIdAndCars = state["StepIdAndCars"] || {};
 
       return calculateS( oldCarIdAndStepId, oldStepIdAndCars, newCars);
+      
+    default:
+      return state
+  }
+}
+
+
+
+
+const intersectM1 = (arrChanges, stepid, objStepCars) => {
+
+  let objAdd = {};
+  let objRemove = {};
+//  let haveChanges = false;
+  let haveAdd = false;
+  let haveRemove = false;
+
+  arrChanges.forEach( change => {
+    if (change.stepid == stepid) {
+      objAdd[change.carid] = stepid;
+      haveAdd = true;
+    }else if (change.carid in objStepCars) {
+//      objAdd[change.carid] = "";
+      objRemove[change.carid] = false;
+      haveRemove = true;
+    };
+  });
+
+  return {
+            objAdd,
+            objRemove,
+            haveAdd,
+            haveRemove,
+            haveChanges: (haveAdd || haveRemove)
+          };
+};
+
+const calculateSumChanges = ( objStepIdWithCarIds, objChanges ) => {
+
+  let haveChanges = false;
+
+  let arrCarChanges = Object.keys(objChanges)
+    .map( carid => ({carid, stepid: objChanges[carid] ? objChanges[carid].stepid : false }) );
+
+  let objSumStepChanges = {};
+
+  let newStepIds = { ...(arrCarChanges.filter( obj => obj.stepid )
+                          .map( obj => obj.stepid )) );
+
+  let objLoop = { ...(Object.keys(objStepIdWithCarIds)), ...newStepid };
+
+  Object.keys(objLoop).forEach( stepid => {
+    if ( !objStepIdWithCarIds[stepid]) {
+      objSumStepChanges[stepid] = {};
+      haveChanges = true;
+    };
+    
+    let oldCarIds = objStepIdWithCarIds[stepid] || {};
+
+    let midChangeForStep = intersectM1( arrCarChanges, stepid, oldCarIds );
+    if (midChangeForStep.haveChanges) {
+      haveChanges = true;
+      // objSumStepChanges[stepid] = { 
+      //                           ...objStepIdWithCarIds[stepid],
+      //                           ...midChangeForStep.objAdd
+      //                           };
+
+      let newCarIds;// = {};
+      if (midChangeForStep.haveRemove) {
+
+        let objInit = midChangeForStep.haveAdd ? midChangeForStep.objAdd : {};
+        newCarIds = Object.keys(oldCarIds).filter( carid => !(carid in midChangeForStep.objRemove) )
+          .reduce( carid => {
+            return oldCarIds[carid];
+          }, objInit );
+
+      }else { //if (midChangeForStep.haveAdd) {  
+        newCarIds = { 
+                    ...oldCarIds,
+                    ...midChangeForStep.objAdd
+                    };
+      };
+      objSumStepChanges[stepid] = newCarIds;
+
+    };
+  });
+
+  return {
+    Changes: objSumStepChanges, 
+    haveChanges;
+  };
+};
+
+
+const initialState =  { 
+// //    "step02": { 
+// //      "a001bc": "",
+// //      "d007ef": "",
+// //      "d007ee": ""
+// //            }
+  }
+
+export default function stepsWithCars(state = initialState, action) {
+
+  switch (action.type) {
+
+    case 'message_fullstate':
+
+      let newCars = action.data.cars;
+
+//      let oldState = {};
+      let oldState;
+      if (0 < Object.keys(state).length) {
+        oldState = {};
+      }else{
+        oldState = state;
+      };
+
+      let res = calculateSumChanges( oldState, newCars );
+      if (res.haveChanges) {
+//        return { ...oldState, ...res.Changes };
+        return res.Changes;
+      }else{
+        return oldState;
+      };
+
+      return calculateS( oldCarIdAndStepId, oldStepIdAndCars, newCars);
+
+    case 'message_update':
+
+      let newCars = action.data.cars;
+
+      let oldState = state || {};
+
+      let res = calculateSumChanges( oldState, newCars );
+      if (res.haveChanges) {
+        return { ...oldState, ...res.Changes };
+      }else{
+        return oldState;
+      };
       
     default:
       return state

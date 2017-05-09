@@ -1,16 +1,28 @@
 /* everywhere else */
+
 * {
   font-family: Arial, Helvetica, sans-serif;
+//  font-size: 1em;
 }
+
 
 table { 
   width: 100%; /* Ширина таблицы */
 //  border: 4px double black; /* Рамка вокруг таблицы */
   border-collapse: collapse; /* Отображать только одинарные линии */
 }
-td, th {
+table {
+    table-layout: fixed;
+}
+
+td {
   border: 1px solid #999;
   padding: 0.5rem;
+}
+th {
+  border: 1px solid #999;
+  font-weight: normal;
+  font-size: 1vw;
 }
 
 /* Цвет фона ячеек */
@@ -83,3 +95,52 @@ th {
 //col:nth-child(2) {
 //  background: yellow; 
 //}
+
+.Disconnected {
+  background: #D3D3D3;
+}
+
+@keyframes 'blinc-border' {
+  from {
+   border: 1px solid #999;       
+  }
+  25% {
+   border: 2px solid #00FF00;       
+  }
+  50% {
+   border: 3px solid #00FF00;       
+  }
+  75% {
+   border: 2px solid #00FF00;       
+  }
+  to {
+   border: 1px solid #999;       
+  }
+}
+
+@keyframes 'blinc-bg' {
+  from {
+   background: #90EE90;
+  }
+  25% {
+   background: #90EE90;
+  }
+  50% {
+   background: #90EE90;
+  }
+  60% {
+   background: #inherit;
+  }
+  to {
+    background: inherit;
+  }
+}
+
+.NewState {
+  animation-name: blinc-bg;
+  animation-duration: 1.5s;
+  animation-timing-function: easy-in;
+  animation-delay: 0s;
+  animation-iteration-count: 6;
+  animation-direction: normal;
+}

@@ -141,6 +141,8 @@ const getColumns = (stepsById) => sortBy( stepsById, ['id'] );
 // 	);
 export const selColumnHead = (state) => state.stepsById;
 
+export const selConnected = (state) => state.isConnected;
+
 const getRows = ( steps_ArrSorted, autosById, emptyCell ) => {
 
 	let autosById_fs = sortBy( pickBy( autosById, auto => !!auto ), ['stepid', 'timestamp'] );

@@ -3,11 +3,13 @@
 import stepsById from './stepsById'
 import autosById from './autosById'
 import emptyCell from './emptyCell'
+import isConnected from './isConnected'
 
 const rootReducer = combineReducers({
   stepsById,
   autosById,
-  emptyCell
+  emptyCell,
+  isConnected
 })
 
 

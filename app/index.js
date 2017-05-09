@@ -5,7 +5,9 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux'
 
 
-import createSocketIoMiddleware from 'redux-socket.io';
+//import createSocketIoMiddleware from 'redux-socket.io';
+import createSocketIoMiddleware from './middleware/api';
+
 import io from 'socket.io-client';
 //let socket = io('http://localhost:3000');
 let socket = io();
@@ -32,5 +34,8 @@ render(
 //store.subscribe(()=>{
 //  console.log('new client state', store.getState());
 //});
+socket.on('disconnect', function (data) {	
+	store.dispatch({type:'disconnected'});
+});
 
 store.dispatch({type:'server/subscribe'});

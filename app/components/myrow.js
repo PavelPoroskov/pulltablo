@@ -3,13 +3,13 @@ import pure from 'recompose/pure';
 
 import MyCell from './mycell'
 
-const MyRow = ({row}) => {
+const MyRow = ({row,time_actual}) => {
 
     console.log("Rendering MyRow");
 
   	let cells = row.map( (auto,index) => {
   		return (
-        <MyCell auto={auto} key={index}/>
+        <MyCell auto={auto} key={index} time_actual={time_actual}/>
 //        <MyCell auto={auto}/>
   		)
   	});

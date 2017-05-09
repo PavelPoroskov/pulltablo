@@ -1,15 +1,41 @@
-
-detect disconnect on client
++detect disconnect on client
 	change background to dim
 
 	connect => Un (change background to dim)
 
 
-animate new step for car
++animate new step for car
 	blink 3 time, green
 	solid thick green border
 	un
 
+store
+	stepsById
+	arrStepIds // [stepid1, stepid2, ...]
+	carsById
+	objStepIdsAndCarIds // { stepid1: {carid1: true, carid2: true, ... }, stepid2: {...}, ... }
+								// --this and reselect
+	                    // { stepid1: {carid1: timestamp, carid2: timestamp, ... }, stepid2: {...}, ... }  ?
+	                    // { stepid1: [carid1, carid2, ...], stepid2: [...], ... }  ?
+	                    // { stepid1: [{carid1, timestamp: timestamp1}, {carid2:timestamp2}, ...], stepid2: [...], ... }  ?
+
+	// intersection of many ( mA && mB = mC)    (mA, mB) => {return mC}
+	//     newCar = {carid1: stepid1, carid2: "" } intersect with {carid5: stepid3, carid6: stepid1}
+
+on car change state redraw only two columns
+MyTable = MyColumn MyColumn ...
+MyColumn = MyHeadCell MyColumnBody
+MyColumnBody = MyBodyCell MyBodyCell ...
+
+post
+	currentCar:
+	nextCar:
+
+	socket.io 
+		storing data associated with each clien
+
+step Working, workshop Metalwork (Mechanic)
+step Working, workshop Tinwork
 
 in table nabour head cell
 	|   working (purpl)       |
