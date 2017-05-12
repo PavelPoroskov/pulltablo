@@ -99,7 +99,7 @@ th {
 .Disconnected {
   background: #D3D3D3;
 }
-
+/*
 @keyframes 'blinc-border' {
   from {
    border: 1px solid #999;       
@@ -117,8 +117,8 @@ th {
    border: 1px solid #999;       
   }
 }
-
-@keyframes 'blinc-bg' {
+*/
+@keyframes blincbg {
   from {
    background: #90EE90;
   }
@@ -129,7 +129,7 @@ th {
    background: #90EE90;
   }
   60% {
-   background: #inherit;
+   background: inherit;
   }
   to {
     background: inherit;
@@ -137,10 +137,10 @@ th {
 }
 
 .NewState {
-  animation-name: blinc-bg;
+  animation-name: blincbg;
   animation-duration: 1.5s;
-  animation-timing-function: easy-in;
+  animation-timing-function: ease;
   animation-delay: 0s;
-  animation-iteration-count: 6;
+  animation-iteration-count: 8;
   animation-direction: normal;
 }
