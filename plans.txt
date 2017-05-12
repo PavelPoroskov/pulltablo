@@ -27,6 +27,11 @@ MyTable = MyColumn MyColumn ...
 MyColumn = MyHeadCell MyColumnBody
 MyColumnBody = MyBodyCell MyBodyCell ...
 
+some filter by columns list
+	Acceptance: all columns
+	Washing: ['Acceptance', 'Washing (wait)', 'Washing', 'Direct acceptance (wait)', 
+		'Direct acceptance (wait)', 'Mechanic (wait)']
+
 post
 	currentCar:
 	nextCar:
