@@ -10,7 +10,8 @@ const intersectSets = (arrChanges, stepid, objStepCars) => {
 
   arrChanges.forEach( change => {
     if (change.stepid == stepid) {
-      objAdd[change.carid] = true;
+//      objAdd[change.carid] = true;
+      objAdd[change.carid] = change;
 //      objChange[change.carid] = true;
       haveAdd = true;
     }else if (change.carid in objStepCars) {
@@ -36,7 +37,11 @@ const calculateSumChanges = ( objStepIdWithCarIds, objChanges ) => {
   let haveChanges = false;
 
   let arrCarChanges = Object.keys(objChanges)
-    .map( carid => ({carid, stepid: objChanges[carid] ? objChanges[carid].stepid : false }) );
+    .map( carid => ({
+      carid, 
+      stepid: objChanges[carid] ? objChanges[carid].stepid : false,
+      sort: objChanges[carid] ? objChanges[carid].timestamp : 0
+    }) );
 
   // let newStepIds = { ...(arrCarChanges.filter( obj => obj.stepid )
   //                         .map( obj => obj.stepid )) );
@@ -53,9 +58,9 @@ const calculateSumChanges = ( objStepIdWithCarIds, objChanges ) => {
 
   Object.keys(objStepIdWithCarIds).forEach( stepid => {
     
-    let oldCarIds = objStepIdWithCarIds[stepid];
+    let oldCars = objStepIdWithCarIds[stepid];
 
-    let midChangeForStep = intersectSets( arrCarChanges, stepid, oldCarIds );
+    let midChangeForStep = intersectSets( arrCarChanges, stepid, oldCars );
     if (midChangeForStep.haveChanges) {
       haveChanges = true;
       // objSumStepChanges[stepid] = { 
@@ -63,26 +68,26 @@ const calculateSumChanges = ( objStepIdWithCarIds, objChanges ) => {
       //                           ...midChangeForStep.objChange
       //                           };
 
-      let newCarIds;// = {};
+      let newCars;// = {};
       if (midChangeForStep.haveRemove) {
 
         let objInit = midChangeForStep.haveAdd ? midChangeForStep.objAdd : {};
 
-        newCarIds = Object.keys(oldCarIds)
+        newCars = Object.keys(oldCars)
           .filter( carid => !(carid in midChangeForStep.objRemove) )
           .reduce( (objSum, carid) => {
-            objSum[carid] = true;
+            objSum[carid] = oldCars[carid];
             return objSum;
           }, objInit );
 
       }else { //if (midChangeForStep.haveAdd) {  
-        newCarIds = { 
-                    ...oldCarIds,
+        newCars = { 
+                    ...oldCars,
                     ...midChangeForStep.objAdd
                     };
       };
 
-      objSumStepChanges[stepid] = newCarIds;
+      objSumStepChanges[stepid] = newCars;
     };
   });
 

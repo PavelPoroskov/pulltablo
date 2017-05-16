@@ -1,17 +1,18 @@
 import React from 'react';
 import pure from 'recompose/pure';
 
-const MyCell = ({auto,time_actual}) => {
-  console.log("Rendering MyCell");
+const MyCell = ({car,time_actual}) => {
+  console.log(`Rendering MyCell ${car.carid}`);
   console.log(time_actual);
-  console.log(auto.time_update);
+//  let obj = cars[car.carid];
+  console.log(car.time_update);
     
-  const className = auto.time_update && time_actual < auto.time_update? "NewState" : "State"; 
+  const className = car.time_update && time_actual < car.time_update? "Cell NewState" : "Cell State"; 
   return (
 //    <td key={auto.carid}>
-	<td className={className}>
-      {auto.carid}
-    </td>
+	<div className={className}>
+      {car.carid}
+    </div>
   )
 };
 

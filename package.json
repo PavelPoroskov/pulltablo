@@ -11,9 +11,6 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "lodash.groupby": "^4.6.0",
-    "lodash.map": "^4.6.0",
-    "lodash.pickby": "^4.6.0",
     "lodash.sortby": "^4.7.0",
     "lowdb": "^0.14.0",
     "react": "^15.4.1",
@@ -22,6 +19,7 @@
     "recompose": "^0.23.1",
     "redux": "^3.6.0",
     "reselect": "^3.0.0",
+    "reselect-map": "^1.0.1",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
