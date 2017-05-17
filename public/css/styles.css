@@ -10,6 +10,10 @@ table {
   width: 100%; /* Ширина таблицы */
 //  border: 4px double black; /* Рамка вокруг таблицы */
   border-collapse: collapse; /* Отображать только одинарные линии */
+/*2017.05.17  
+  min-height: 100%;
+  height: 100%;
+*/  
 }
 table {
     table-layout: fixed;
@@ -17,8 +21,18 @@ table {
 
 td {
   border: 1px solid #999;
-  padding: 0.5rem;
+/*  padding: 0.5rem; */
+  vertical-align: top;
+  padding: 0;
+  height: 100%;
 }
+
+.Cell {
+/*  border: 1px solid #999;*/
+  border-bottom: 1px solid #999;
+  padding: 0.5rem; 
+}
+
 th {
   border: 1px solid #999;
   font-weight: normal;

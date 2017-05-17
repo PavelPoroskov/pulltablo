@@ -22,16 +22,21 @@ export const selConnected = (state) => state.isConnected;
 
 
 const selStepsWithCars = (state) => state.stepsWithCars;
+//const selF = (state) => 1;
 
 export const selColumns = createObjectSelector(
   selStepsWithCars,
 //  state => state.multiplier,
 //  (number, multiplier, key) => { 
   (objCars, stepid) => { 
-  	console.log(stepid);
+//  	console.log(stepid);
 
-//  	let Object.keys(objCarIds).map( carid => )
-  	return sortBy( objCars, ['sort'] )
+//   selStepsWithCars,
+//   selF,
+//   (objCars, selF, stepid) => { 
+//   	console.log(stepid);
+// //  	let Object.keys(objCarIds).map( carid => )
+  	return sortBy( objCars, ['sort'] );
   }
 )
 

@@ -9,7 +9,7 @@
 	solid thick green border
 	un
 
-store
++store
 	stepsById
 	arrStepIds // [stepid1, stepid2, ...]
 	carsById
@@ -22,10 +22,10 @@ store
 	// intersection of many ( mA && mB = mC)    (mA, mB) => {return mC}
 	//     newCar = {carid1: stepid1, carid2: "" } intersect with {carid5: stepid3, carid6: stepid1}
 
-on car change state redraw only two columns
-MyTable = MyColumn MyColumn ...
-MyColumn = MyHeadCell MyColumnBody
-MyColumnBody = MyBodyCell MyBodyCell ...
++on car change state redraw only two columns
+	MyTable = MyColumn MyColumn ...
+	MyColumn = MyHeadCell MyColumnBody
+	MyColumnBody = MyBodyCell MyBodyCell ...
 
 some filter by columns list
 	Acceptance: all columns

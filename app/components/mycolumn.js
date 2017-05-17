@@ -1,11 +1,12 @@
 import React from 'react';
-import pure from 'recompose/pure';
+//import pure from 'recompose/pure';
+import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 
 import MyCell from './mycell'
 
 const MyColumn = ({step,column,time_actual,cars}) => {
 
-    console.log(`Rendering MyColumn ${step.stepid}`);
+    console.log(`   Rendering MyColumn ${step.stepid}`);
 
   	let cells = column.map( (car,index) => {
   		return (
@@ -21,4 +22,4 @@ const MyColumn = ({step,column,time_actual,cars}) => {
     )
 };
 
-export default pure(MyColumn)
+export default onlyUpdateForKeys(['column'])(MyColumn)

@@ -93,7 +93,7 @@ const calculateSumChanges = ( objStepIdWithCarIds, objChanges ) => {
 
   return {
     Changes: objSumStepChanges, 
-    haveChanges;
+    haveChanges
   };
 };
 
@@ -106,19 +106,21 @@ const initialState =  {
 // //            }
   }
 
-export default function stepIdsWithCarIds(state = initialState, action) {
+export default function stepsWithCars(state = initialState, action) {
+
+  let cars;
+  let res;
 
   switch (action.type) {
 
     case 'message_fullstate':
 
-      let cars = action.data.cars;
+      cars = action.data.cars;
       let steps = action.data.steps;
 
       if (!steps) {
         return initialState
       };
-
 
 //        let newState = { ...steps.map( step => ({  [step.stepid]: {}  })  )  };
 
@@ -127,7 +129,7 @@ export default function stepIdsWithCarIds(state = initialState, action) {
         return objSum; 
       }, {} )
 
-      let res = calculateSumChanges( newState, cars );
+      res = calculateSumChanges( newState, cars );
 
       if (res.haveChanges) {
         return { ...newState, ...res.Changes };
@@ -138,11 +140,11 @@ export default function stepIdsWithCarIds(state = initialState, action) {
 
     case 'message_update':
 
-      let cars = action.data.cars;
+      cars = action.data.cars;
 
       let oldState = state || initialState;
 
-      let res = calculateSumChanges( oldState, cars );
+      res = calculateSumChanges( oldState, cars );
       if (res.haveChanges) {
         return { ...oldState, ...res.Changes };
       }else{

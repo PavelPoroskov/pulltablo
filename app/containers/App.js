@@ -24,13 +24,25 @@ App.propTypes = {
 }
 
 
-const mapStateToProps = state => ({
+// const mapStateToProps = state => ({
+// //  tabledata: getStepsWithAutos( state.stepsById, state.autosById )
+//   heads: selColumnHead(state),
+//   columns: selColumns(state),
+//   cars: selCars(state),
+//   isConnected: selConnected(state)
+// })
+
+const mapStateToProps = state => {
+//  console.log(state);
+  return {
 //  tabledata: getStepsWithAutos( state.stepsById, state.autosById )
-  heads: selColumnHead(state),
-  columns: selColumns(state),
-  cars: selCars(state),
-  isConnected: selConnected(state)
-})
+    heads: selColumnHead(state),
+    columns: selColumns(state),
+    cars: selCars(state),
+    isConnected: selConnected(state)
+  }
+}
+
 
 export default connect(
   mapStateToProps
