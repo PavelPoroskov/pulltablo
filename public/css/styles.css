@@ -157,3 +157,9 @@ th {
   animation-iteration-count: 8;
   animation-direction: normal;
 }
+
+a:active {
+  text-decoration: 'none' !important;
+  color: 'black' !important;
+  background-color: yellow;  
+}

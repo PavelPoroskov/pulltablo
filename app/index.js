@@ -2,7 +2,7 @@ import React from 'react'
 import { render } from 'react-dom'
 
 import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 
 
 //import createSocketIoMiddleware from 'redux-socket.io';
@@ -22,20 +22,26 @@ import reducer from './reducers';
 //let store = applyMiddleware(socketIoMiddleware)(createStore)(reducer);
 let store = createStore(reducer, applyMiddleware(socketIoMiddleware) );
 
-//store.dispatch({type:'server/subscribe'});
 
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-)
-//store.dispatch({type:'init'});
-//store.subscribe(()=>{
-//  console.log('new client state', store.getState());
-//});
+// render(
+//   <Provider store={store}>
+//    	<App />
+//   </Provider>,
+//   document.getElementById('root')
+// )
+
+
+console.log('location.pathname', location.pathname );
+
 socket.on('disconnect', function (data) {	
 	store.dispatch({type:'disconnected'});
 });
 
 store.dispatch({type:'server/subscribe'});
+
+render(
+  <Provider store={store}>
+   	<App />
+  </Provider>,
+  document.getElementById('root')
+)

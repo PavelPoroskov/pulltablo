@@ -32,6 +32,23 @@ some filter by columns list
 	Washing: ['Acceptance', 'Washing (wait)', 'Washing', 'Direct acceptance (wait)', 
 		'Direct acceptance (wait)', 'Mechanic (wait)']
 
+	1) transfer parameters to MyTable (<Router to component={MyTable}>)
+		a) component={MyTable} (example react-redux v4)
+		b) render
+		c) childrens
+	2) or filter columns by url (example in redux)
+	3) or change state by url. Is it possible?
+		state.filter 		
+		state.AllColumns (fullstate --+ )
+				state.filteredColumns
+					--+ selColumns 
+					--+ selColumnsWithCars
+
+	not Link, use <a> reload app every choice
+	not react-router
+
+	initial location.pathname --+ filter
+
 post
 	currentCar:
 	nextCar:

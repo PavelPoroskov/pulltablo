@@ -72,7 +72,8 @@ appExp.get('/css/styles.css', function(req, res, next) {
  */
 
 //app.get('*', function(req, res, next) {
-appExp.get('/', function(req, res, next) {
+//appExp.get('/', function(req, res, next) {
+appExp.get('/*', function(req, res, next) {
   console.log('Request: [GET]', req.originalUrl)
   res.sendFile(path.resolve(__dirname, 'index.html'));
 });

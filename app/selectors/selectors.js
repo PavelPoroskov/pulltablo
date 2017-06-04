@@ -4,7 +4,8 @@
 //import {sortBy, pickBy} from 'lodash' //+
 
 //import pickBy from 'lodash.pickBy'
-import sortBy from 'lodash.sortBy'
+//import sortBy from 'lodash.sortBy'
+import sortBy from 'lodash.sortby'
 //import groupBy from 'lodash.groupBy'
 //import _map from 'lodash.map'
 
