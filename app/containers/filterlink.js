@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 
 const FilterLink = ({ filter, children }) => (
-  <Link to={filter === 'AALL' ? '/' : filter} >
+  <NavLink exact to={'/' + (filter === 'ALL' ? '' : filter)} activeClassName="selectedNavLink">
     {children}
-  </Link>
+  </NavLink>
 );
 
 export default FilterLink;

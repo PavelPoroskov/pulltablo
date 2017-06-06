@@ -35,6 +35,9 @@ td {
 */  
   padding-bottom: 1px;
   height: 100%;
+
+  font-weight: normal;
+  font-size: 1.8vw;
 }
 
 .Cell {
@@ -157,9 +160,15 @@ th {
   animation-iteration-count: 8;
   animation-direction: normal;
 }
-
+/*
 a:active {
   text-decoration: 'none' !important;
   color: 'black' !important;
   background-color: yellow;  
+}*/
+
+.selectedNavLink {
+  text-decoration: none;
+  color: white;
+  background-color: blue;  
 }

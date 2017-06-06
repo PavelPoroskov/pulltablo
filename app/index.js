@@ -23,21 +23,37 @@ import reducer from './reducers';
 let store = createStore(reducer, applyMiddleware(socketIoMiddleware) );
 
 
-// render(
-//   <Provider store={store}>
-//    	<App />
-//   </Provider>,
-//   document.getElementById('root')
-// )
-
-
-console.log('location.pathname', location.pathname );
-
 socket.on('disconnect', function (data) {	
 	store.dispatch({type:'disconnected'});
 });
 
+
+
+// const selectFilter = (state) => state.strColumnsFilter
+
+// let currentFilter
+
+// const handleColumnsFilterChange = () => {
+//   let previousFilter = currentFilter
+//   currentFilter = (store.getState()) 
+
+//   if (previousFilter !== currentFilter) {
+// //    console.log('Some deep nested property changed from', previousValue, 'to', currentValue)
+// 		store.dispatch({type:'server/subscribe'});
+//   }
+// }
+
+// store.subscribe(handleColumnsFilterChange);
+
+
+console.log('location.pathname', location.pathname );
+//if (location.pathname in { '//':'', '//priemka':'', '//washing':'' }) {
+if (location.pathname == '//washing') {
+	store.dispatch( { type:'set_filter', 'filter': location.pathname });
+}
+
 store.dispatch({type:'server/subscribe'});
+
 
 render(
   <Provider store={store}>

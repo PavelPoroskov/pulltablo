@@ -7,11 +7,12 @@ import stepsWithCars from './stepsWithCars'
 import isConnected from './isConnected'
 
 const rootReducer = combineReducers({
+	strColumnsFilter,
   stepsById,
   autosById,
 //  emptyCell,
   stepsWithCars,
-  isConnected
+  isConnected,
 })
 
 
