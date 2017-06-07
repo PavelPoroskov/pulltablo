@@ -13,35 +13,42 @@ import { createSelector } from 'reselect'
 import { createObjectSelector } from 'reselect-map'
 
 
-const selectColumnsFilter = (state) => state.strColumnsFilter
+const selColumnsFilter = (state) => state.strColumnsFilter
 const selColumnHead0 = (state) => state.stepsById;
 
+// {'stepid': '01.1','name':'Приемка','classCSS':'HeadCell_01_1'}, 
+// {'stepid': '02.0','name':'Мойка (ожидание)','classCSS':'HeadCell_02_0'}, 
+// {'stepid': '02.1','name':'Мойка','classCSS':'HeadCell_02_1'}, 
+// {'stepid': '04.0','name':'Прямая приемка (ожидание)','classCSS':'HeadCell_04_0'}, 
+// {'stepid': '04.1','name':'Прямая приемка','classCSS':'HeadCell_04_1'}, 
+// {'stepid': '05.0','name':'Выполнение работ (ожидание)','classCSS':'HeadCell_05_0'}, 
+
+let setFilterWashing = { 
+	'01.1':true,
+	'02.0':true,
+	'02.1':true,
+	'04.0':true,
+	'04.1':true,
+	'05.0':true
+};
+
 export const selColumnHead = createSelector(
-	selectColumnsFilter,
+	selColumnsFilter,
 	selColumnHead0,
 	(filter,steps) => {
-		if (filter=='//washing') {
-		// {'stepid': '01.1','name':'Приемка','classCSS':'HeadCell_01_1'}, 
-		// {'stepid': '02.0','name':'Мойка (ожидание)','classCSS':'HeadCell_02_0'}, 
-		// {'stepid': '02.1','name':'Мойка','classCSS':'HeadCell_02_1'}, 
-		// {'stepid': '04.0','name':'Прямая приемка (ожидание)','classCSS':'HeadCell_04_0'}, 
-		// {'stepid': '04.1','name':'Прямая приемка','classCSS':'HeadCell_04_1'}, 
-		// {'stepid': '05.0','name':'Выполнение работ (ожидание)','classCSS':'HeadCell_05_0'}, 
-
-			let setFilter = { 
-				'01.1':true,
-				'02.0':true,
-				'02.1':true,
-				'04.0':true,
-				'04.1':true,
-				'05.0':true
-			};
-			return steps.filter( step => step.stepid in setFilter );
-		}else{
+		console.log("selColumnHead filter=", filter);
+		if (filter=='/washing') {
+			return steps.filter( step => step.stepid in setFilterWashing );
+		}else if (filter=='/priemka') {
+//			return steps.filter( step => step.stepid in setFilterPriemka );
 			return steps
+		}else if (filter=='/') {
+			return steps
+		}else{
+			return [];
 		}
 	}
-	);
+);
 
 
 
@@ -53,36 +60,26 @@ export const selConnected = (state) => state.isConnected;
 
 const selStepsWithCars0 = (state) => state.stepsWithCars;
 const selStepsWithCars = createSelector(
-	selectColumnsFilter,
+	selColumnsFilter,
 	selStepsWithCars0,
 	(filter,steps) => {
-		if (filter=='//washing') {
-		// {'stepid': '01.1','name':'Приемка','classCSS':'HeadCell_01_1'}, 
-		// {'stepid': '02.0','name':'Мойка (ожидание)','classCSS':'HeadCell_02_0'}, 
-		// {'stepid': '02.1','name':'Мойка','classCSS':'HeadCell_02_1'}, 
-		// {'stepid': '04.0','name':'Прямая приемка (ожидание)','classCSS':'HeadCell_04_0'}, 
-		// {'stepid': '04.1','name':'Прямая приемка','classCSS':'HeadCell_04_1'}, 
-		// {'stepid': '05.0','name':'Выполнение работ (ожидание)','classCSS':'HeadCell_05_0'}, 
-
-			let setFilter = { 
-				'01.1':true,
-				'02.0':true,
-				'02.1':true,
-				'04.0':true,
-				'04.1':true,
-				'05.0':true
-			};
-
+		console.log("selStepsWithCars filter=", filter);
+		if (filter=='/washing') {
+			
       let newObj = Object.keys(steps)
-        .filter( stepid => stepid in setFilter )
+        .filter( stepid => stepid in setFilterWashing )
         .reduce( (objSum, stepid) => {
           objSum[stepid] = steps[stepid];
           return objSum;
         }, {} );
 
 			return newObj;
-		}else{
+		}else if (filter=='/priemka') {
 			return steps
+		}else if (filter=='/') {
+			return steps
+		}else{
+			return {}
 		}
 	}
 	);

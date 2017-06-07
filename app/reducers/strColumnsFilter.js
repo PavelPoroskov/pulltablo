@@ -29,6 +29,7 @@ export default function strColumnsFilter(state = initialState, action) {
     //   };
 
     case 'set_filter':
+      console.log('action.filter', action.filter );
       return action.filter;
 //    case 'message_update':
 

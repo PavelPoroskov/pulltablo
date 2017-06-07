@@ -14,46 +14,33 @@ let socket = io();
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 
 
+import { setColumnsFilter } from './actions';
 import App from './containers/App';
 import reducer from './reducers';
-//import 'todomvc-app-css/index.css'
 
-//const store = createStore(reducer,applyMiddleware(socketIoMiddleware));
-//let store = applyMiddleware(socketIoMiddleware)(createStore)(reducer);
-let store = createStore(reducer, applyMiddleware(socketIoMiddleware) );
+let curFilter = '';
+if (location.pathname in { '/':'', '/priemka':'', '/washing':'' } ) {
+//	console.log('location.pathname 2', location.pathname );
+	curFilter = location.pathname;
+}
+let preloadedStat = {
+	strColumnsFilter: curFilter,
+  stepsById: [],
+  autosById: {},
+  stepsWithCars: {},
+  isConnected: false,
+};
+
+let store = createStore(reducer, preloadedStat, applyMiddleware(socketIoMiddleware) );
 
 
 socket.on('disconnect', function (data) {	
 	store.dispatch({type:'disconnected'});
 });
 
-
-
-// const selectFilter = (state) => state.strColumnsFilter
-
-// let currentFilter
-
-// const handleColumnsFilterChange = () => {
-//   let previousFilter = currentFilter
-//   currentFilter = (store.getState()) 
-
-//   if (previousFilter !== currentFilter) {
-// //    console.log('Some deep nested property changed from', previousValue, 'to', currentValue)
-// 		store.dispatch({type:'server/subscribe'});
-//   }
-// }
-
-// store.subscribe(handleColumnsFilterChange);
-
-
-console.log('location.pathname', location.pathname );
-//if (location.pathname in { '//':'', '//priemka':'', '//washing':'' }) {
-if (location.pathname == '//washing') {
-	store.dispatch( { type:'set_filter', 'filter': location.pathname });
-}
+//store.dispatch( setColumnsFilter(curFilter) );
 
 store.dispatch({type:'server/subscribe'});
-
 
 render(
   <Provider store={store}>

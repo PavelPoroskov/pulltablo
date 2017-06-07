@@ -1,5 +1,6 @@
  import { combineReducers } from 'redux'
 
+import strColumnsFilter from './strColumnsFilter'
 import stepsById from './stepsById'
 import autosById from './autosById'
 import emptyCell from './emptyCell'
