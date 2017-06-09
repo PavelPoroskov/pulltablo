@@ -55,7 +55,21 @@ td {
 */  
 }
 
+.Cell {
+  position: relative;
+/*  border: 1px solid #999;*/
+  border-bottom: 1px solid #999; 
+/*  border-top: 1px solid #999; */
+  padding: 0.5rem; 
+/*  padding-bottom: 0.5rem; */
+}
+
 .CellNumber {
+/*  
+  position: relative;
+  top: 0;
+  left: 0;
+*/
   font-weight: normal; 
   font-family: RoadFont; 
   font-size: 210%; 
@@ -63,25 +77,19 @@ td {
 }
 
 .backgroundtext {
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
-  right: 0;
   z-index: -1;
 
   overflow: hidden;
   color: gray;
   opacity: 0.2;
+
+  width: 100%;
+  text-align: right;
 }
 
-.Cell {
-/*  border: 1px solid #999;*/
-  border-bottom: 1px solid #999; 
-/*  border-top: 1px solid #999; */
-  padding: 0.5rem; 
-/*  padding-bottom: 0.5rem; */
-}
 
 
 /* Цвет фона ячеек */

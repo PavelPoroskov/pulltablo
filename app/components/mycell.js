@@ -12,6 +12,7 @@ const MyCell = ({car,time_actual}) => {
   return (
 //    <td key={auto.carid}>
 	<div className={className}>
+		<div className='backgroundtext'>Post 1</div> 
 		<div className='CellNumber'>{car.carid}</div>  	
   </div>
   )
