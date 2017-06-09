@@ -13,7 +13,7 @@ import { createSelector } from 'reselect'
 import { createObjectSelector } from 'reselect-map'
 
 
-const selColumnsFilter = (state) => state.strColumnsFilter
+export const selColumnsFilter = (state) => state.strColumnsFilter
 const selColumnHead0 = (state) => state.stepsById;
 
 // {'stepid': '01.1','name':'Приемка','classCSS':'HeadCell_01_1'}, 
