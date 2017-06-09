@@ -6,12 +6,13 @@ const MyCell = ({car,time_actual}) => {
   console.log(`			Rendering MyCell ${car.carid}`);
   // console.log(time_actual);
   // console.log(car.time_update);
+//		<div className='backgroundtext'>Moika 1</div> 
     
   const className = car.time_update && time_actual < car.time_update? "Cell NewState" : "Cell State"; 
   return (
 //    <td key={auto.carid}>
 	<div className={className}>
-  	{car.carid}
+		<div className='CellNumber'>{car.carid}</div>  	
   </div>
   )
 };
