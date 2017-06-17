@@ -3,196 +3,123 @@
 
 //import {sortBy, pickBy} from 'lodash' //+
 
-import pickBy from 'lodash.pickBy'
-import sortBy from 'lodash.sortBy'
-import groupBy from 'lodash.groupBy'
-import _map from 'lodash.map'
+//import pickBy from 'lodash.pickBy'
+//import sortBy from 'lodash.sortBy'
+import sortBy from 'lodash.sortby'
+//import groupBy from 'lodash.groupBy'
+//import _map from 'lodash.map'
 
 import { createSelector } from 'reselect'
+import { createObjectSelector } from 'reselect-map'
 
 
-// function fnSortBy( sign_name, fnMinor ) {
+export const selColumnsFilter = (state) => state.strColumnsFilter
+const selColumnHead0 = (state) => state.stepsById;
 
-// 	var name = sign_name;
-// 	var signSort = 1;
-// 	if (sign_name.charAt(0) == '-') {
-//     	name = sign_name.slice( 1 );
-//     	signSort = -1;
-// 	}
+// {'stepid': '01.1','name':'Приемка','classCSS':'HeadCell_01_1'}, 
+// {'stepid': '02.0','name':'Мойка (ожидание)','classCSS':'HeadCell_02_0'}, 
+// {'stepid': '02.1','name':'Мойка','classCSS':'HeadCell_02_1'}, 
+// {'stepid': '04.0','name':'Прямая приемка (ожидание)','classCSS':'HeadCell_04_0'}, 
+// {'stepid': '04.1','name':'Прямая приемка','classCSS':'HeadCell_04_1'}, 
+// {'stepid': '05.0','name':'Выполнение работ (ожидание)','classCSS':'HeadCell_05_0'}, 
 
-// 	return function( o, p ) {
-//     	var a, b;
+let setFilterWashing = { 
+	'01.1':true,
+	'02.0':true,
+	'02.1':true,
+	'04.0':true,
+	'04.1':true,
+	'05.0':true
+};
 
-
-//     	if ( o && p && typeof o === 'object' && typeof p === 'object') {
-//         	a = o[name];
-//         	b = p[name];
-//         	if (a===b) {
-//             	return typeof fnMinor === 'function' ? fnMinor( o, p ) : 0;
-//         	}
-//         	if (typeof a === typeof b) {
-// //                	return a < b ? -1 : 1;
-//             	var res = a < b ? -1 : 1;
-// //                	if (name == 'edition_Red') {
-// //                    	res = -res;
-// //                	}
-//             	res = res*signSort;
-//             	return res;
-//         	}
-//         	return typeof a < typeof b ? -1 : 1;
-//     	} else {
-//         	throw {
-//             	name: 'Error',
-//             	message: 'Expected an object when sorting by ' + name
-//         	};
-//     	}
-// 	};
-// }
-
-
-// const getStepsWithAutos0 = function( stepsById, autosById ) {
-// 	let steps_ArrSorted = sortBy( stepsById, ['id'] );
-// 	let autosById0 = pickBy( autosById, (auto) => {return !!auto} );
-// 	let stepsWithAutos = steps_ArrSorted.map( step => ({
-// 		...step,
-// 		autos: sortBy( pickBy(autosById0, (auto) => { (auto.stepid==step.id) }) , ['timestamp'] )
-// 	}));
-
-// 	return stepsWithAutos;
-// }
+export const selColumnHead = createSelector(
+	selColumnsFilter,
+	selColumnHead0,
+	(filter,steps) => {
+		console.log("selColumnHead filter=", filter);
+		if (filter=='/washing') {
+			return steps.filter( step => step.stepid in setFilterWashing );
+		}else if (filter=='/priemka') {
+//			return steps.filter( step => step.stepid in setFilterPriemka );
+			return steps
+		}else if (filter=='/') {
+			return steps
+		}else{
+			return [];
+		}
+	}
+);
 
 
-// const ObjToArr = function(_obj) {
-// //	return _obj.values();
-// 	return _obj.keys().map( key => _obj[key] );
-// }
 
-// const getStepsWithAutos = function( stepsById, autosById ) {
-
-// 	let steps_ArrSorted = ObjToArr(stepsById).sort( fnSort( 'id' ) );
-
-// 	let autosById0 = ObjToArr(autosById).filter( auto => !!auto );
-
-// 	let stepsWithAutos = steps_ArrSorted.map( step => ({
-// 		...step,
-// 		autos: autosById0.filter( auto => auto.stepid==step.id ).sort( fnSort( 'timestamp' ) )
-// 	}));
-
-// 	return {		
-// 		stepsWithAutos,
-// 		maxRows: Math.max( ...(stepsWithAutos.map( step => step.autos.length )) ) 
-// 	};
-// }
-
-// const getStepsWithAutos0 = function( stepsById, autosById ) {
-
-// 	let steps_ArrSorted = sortBy( stepsById, ['id'] );
-// 	let autosById0 = pickBy( autosById, (auto) => {return !!auto} );
-
-// 	let stepsWithAutos = steps_ArrSorted.map( step => ({
-// 		...step,
-// 		autos: sortBy( pickBy(autosById0, (auto) => { (auto.stepid==step.id) }) , ['timestamp'] )
-// 	}));
-
-// 	return {		
-// 		stepsWithAutos,
-// 		maxRows: Math.max( ...(stepsWithAutos.map( step => step.autos.length )) ) 
-// 	};
-// }
-
-// const getStepsWithAutos1 = function( stepsById, autosById ) {
-
-// 	let steps_ArrSorted = sortBy( stepsById, ['id'] );
-// 	let autosById_fs = sortBy( pickBy( autosById, auto => !!auto ), ['stepid', 'timestamp'] );
-// 	let autosById_gr = groupBy( autosById_fs, auto => auto.stepid );
-// //	console.log(steps_ArrSorted );
-// //	console.log(autosById_gr );
-// //	let autosById_gr_ar = groupBy( autosById_fs, auto => auto.stepid );
-
-// 	let nRows = Math.max( ...( _map( autosById_gr, autos => autos.length ) ) );
-// //	console.log('nRows ' + nRows );
-
-// 	let rowsAr = [];
-// 	let columns = steps_ArrSorted.map( step => autosById_gr[step.id] );
-// 	for (var i=0; i < nRows; i++ ) {
-// //		rowsAr.concat( [ steps_ArrSorted.map( step => { autosById_gr[step.id][ i ] }) ] );
-// //		rowsAr.push( steps_ArrSorted.map( step => { autosById_gr[step.id][ i ] }) );
-// 		rowsAr.push( columns.map(col => col[i]) );
-// 	};
-// //	console.log(rowsAr);
-// //	console.log(rowsAr[0] );
-// //	console.log(rowsAr[1] );
-
-// 	return {		
-// 		'head': steps_ArrSorted,
-// 		'rows': rowsAr
-// 	};
-// }
-
-const inp_sel_Steps = (state) => state.stepsById;
-const inp_sel_Cars = (state) => state.autosById;
-const inp_sel_EmptySel = (state) => state.emptyCell;
-
-const getColumns = (stepsById) => sortBy( stepsById, ['id'] );
-
-// export const selColumnHead = createSelector(
-// 	[inp_sel_Steps],
-// 	getColumns
-// 	);
-export const selColumnHead = (state) => state.stepsById;
+export const selCars = (state) => state.autosById;
+//const inp_sel_EmptySel = (state) => state.emptyCell;
 
 export const selConnected = (state) => state.isConnected;
 
-const getRows = ( steps_ArrSorted, autosById, emptyCell ) => {
 
-	let autosById_fs = sortBy( pickBy( autosById, auto => !!auto ), ['stepid', 'timestamp'] );
-	let autosById_gr = groupBy( autosById_fs, auto => auto.stepid );
+const selStepsWithCars0 = (state) => state.stepsWithCars;
+const selStepsWithCars = createSelector(
+	selColumnsFilter,
+	selStepsWithCars0,
+	(filter,steps) => {
+		console.log("selStepsWithCars filter=", filter);
+		if (filter=='/washing') {
+			
+      let newObj = Object.keys(steps)
+        .filter( stepid => stepid in setFilterWashing )
+        .reduce( (objSum, stepid) => {
+          objSum[stepid] = steps[stepid];
+          return objSum;
+        }, {} );
 
-	let nRows = Math.max( ...( _map( autosById_gr, autos => autos.length ) ) );
-
-	let rowsAr = [];
-	let columns = steps_ArrSorted.map( step => autosById_gr[step.stepid] );
-	for (var i=0; i < nRows; i++ ) {
-
-//		rowsAr.push( columns.map(col => col[i]) );
-//		rowsAr.push( columns.map( col => col[i] ? col[i] : emptyCell ) );
-		rowsAr.push( columns.map( col => col && col[i] ? col[i] : emptyCell ) );
-	};
-	return rowsAr;
-}
-
-export const selRows = createSelector(
-	[selColumnHead, inp_sel_Cars, inp_sel_EmptySel],
-	getRows
+			return newObj;
+		}else if (filter=='/priemka') {
+			return steps
+		}else if (filter=='/') {
+			return steps
+		}else{
+			return {}
+		}
+	}
 	);
 
-const getOneColumnsForDiv = ( autosById ) => {
+//const selF = (state) => 1;
 
-	let autosById_fs = sortBy( autosById, ['timestamp'] );
-}
+export const selColumns = createObjectSelector(
+  selStepsWithCars,
+//  state => state.multiplier,
+//  (number, multiplier, key) => { 
+  (objCars, stepid) => { 
+//  	console.log(stepid);
 
-const getAllColumnsForDiv = ( steps_ArrSorted, stepsWithCars, emptyCell ) => {
+//   selStepsWithCars,
+//   selF,
+//   (objCars, selF, stepid) => { 
+//   	console.log(stepid);
+// //  	let Object.keys(objCarIds).map( carid => )
+  	return sortBy( objCars, ['sort'] );
+  }
+)
 
-	let columns = steps_ArrSorted.map( step => getOneColumnsForDiv(stepsWithCars[step.id]) );
+// const selMaxColumnHeight = createSelector(
+// 	selColumns,
+// 	Columns => Math.max( ...(Object.keys(Columns).map( stepid => Columns[stepid].length )) )
+// 	);
 
-//	let maxLength = Math.max( ...( _map( autosById_gr, autos => autos.length ) ) );
-	let arLen = columns.map( col => col.length );
-	let maxLength = Math.max( ...arLen );
-	let minLength = Math.min( ...arLen );
-
-	if (minLength < maxLength) {
-		columns = columns.map( col => {
-			if (col.length==maxLength) {
-				return col;
-			}else{
-				let newCol = [...col];
-				for (var lenCol=col.length; lenCol < maxLength; lenCol++ ){
-					newCol.push(inp_sel_EmptySel);	
-				}
-				return newCol;
-			}
-		})
-	}
-
-	return columns;
-}
+// export const selColumnsEqHight = createObjectSelector(
+//   selColumns,
+//   selMaxColumnHeight,
+// //  (number, multiplier, key) => { 
+//   (arrCarIds, maxHeight, stepid) => { 
+//   	if (arrCarIds.length == maxHeight) {
+//   		return arrCarIds;
+//   	}else{
+//   		let arr = [...arrCarIds];
+//   		for (let i=arrCarIds.length; i < maxHeight; i++) {
+//   		  arr.push("");
+//   		};
+//   		return arr;
+//   	}
+//   }
+// );

@@ -15,3 +15,10 @@ export const updateAll = ( steps, autos ) => ({
 	steps, 
 	autos
 })
+
+export const setColumnsFilter = (filter) => {
+  return {
+    type: 'set_filter',
+    filter
+  }
+}

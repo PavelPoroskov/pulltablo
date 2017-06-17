@@ -9,7 +9,7 @@
 	solid thick green border
 	un
 
-store
++store
 	stepsById
 	arrStepIds // [stepid1, stepid2, ...]
 	carsById
@@ -22,15 +22,32 @@ store
 	// intersection of many ( mA && mB = mC)    (mA, mB) => {return mC}
 	//     newCar = {carid1: stepid1, carid2: "" } intersect with {carid5: stepid3, carid6: stepid1}
 
-on car change state redraw only two columns
-MyTable = MyColumn MyColumn ...
-MyColumn = MyHeadCell MyColumnBody
-MyColumnBody = MyBodyCell MyBodyCell ...
++on car change state redraw only two columns
+	MyTable = MyColumn MyColumn ...
+	MyColumn = MyHeadCell MyColumnBody
+	MyColumnBody = MyBodyCell MyBodyCell ...
 
-some filter by columns list
++some filter by columns list
 	Acceptance: all columns
 	Washing: ['Acceptance', 'Washing (wait)', 'Washing', 'Direct acceptance (wait)', 
 		'Direct acceptance (wait)', 'Mechanic (wait)']
+
+	1) transfer parameters to MyTable (<Router to component={MyTable}>)
+		a) component={MyTable} (example react-redux v4)
+		b) render
+		c) childrens
+	2) or filter columns by url (example in redux)
+	3) or change state by url. Is it possible?
+		state.filter 		
+		state.AllColumns (fullstate --+ )
+				state.filteredColumns
+					--+ selColumns 
+					--+ selColumnsWithCars
+
+	not Link, use <a> reload app every choice
+	not react-router
+
+	initial location.pathname --+ filter
 
 post
 	currentCar:

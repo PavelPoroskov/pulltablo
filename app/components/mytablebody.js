@@ -1,7 +1,7 @@
 import React from 'react';
-import MyRow from './myrow';
+import MyColumn from './mycolumn';
 
-const MyTableBody = function(props) {
+const MyTableBody = function({steps,columns,cars}) {
   
   console.log("Rendering MyTableBody");
 //  const time_actual = new Date(new Date() - durationInMinutes * MS_PER_MINUTE);
@@ -12,11 +12,13 @@ const MyTableBody = function(props) {
 
   return (
   <tbody>  
-  {props.rows.map( (row, index) => {
+      <tr>
+      {steps.map( step => {
         return (
-          <MyRow row={row} key={index} time_actual={time_actual_ms}/>
+          <MyColumn step={step} column={columns[step.stepid]} key={step.stepid} cars={cars} time_actual={time_actual_ms}/>
         );
-      })}
+        })}
+      </tr>
   </tbody>
   );
 };
