@@ -1,6 +1,6 @@
 var request = require('request');
 
-let payload = { 
+var payload = { 
 	'steps':[
 		{'stepid': '00.1','name':'Ожидание автомобиля','classCSS':'HeadCell_00_1'}, 
 		{'stepid': '01.1','name':'Приемка','classCSS':'HeadCell_01_1'}, 

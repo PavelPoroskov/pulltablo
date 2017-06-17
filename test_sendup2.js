@@ -1,6 +1,6 @@
 var request = require('request');
 
-let payload = { 
+var payload = { 
 	'cars':{'d007ee': ''},
 	'time_fullstate':'2017-06-06T07:20:57.470Z',
 	'time_update_prev':'2017-06-06T07:21:02.855Z',

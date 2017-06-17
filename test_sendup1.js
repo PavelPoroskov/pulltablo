@@ -1,6 +1,6 @@
 var request = require('request');
 
-let payload = { 
+var payload = { 
 	'cars':{
 		'a001bc': { 'carid': 'a001bc', 'stepid':'02.0', 'timestamp': 1002 }
 		},
