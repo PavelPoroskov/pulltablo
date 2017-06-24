@@ -4,9 +4,9 @@ var payload = {
 	'cars':{
 		'a001bc': { 'carid': 'a001bc', 'stepid':'02.0', 'timestamp': 1002 }
 		},
-	'time_fullstate':'2017-06-06T07:20:57.470Z',
-	'time_update_prev':'2017-06-06T07:20:57.470Z',
-	'time_update':'2017-06-06T07:21:02.855Z'
+	'time_prev':1498300809397,
+	'time':1498300851588,
+	'source':'tetra'
 	};
 
 request.post(

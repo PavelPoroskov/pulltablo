@@ -2,9 +2,9 @@ var request = require('request');
 
 var payload = { 
 	'cars':{'d007ee': ''},
-	'time_fullstate':'2017-06-06T07:20:57.470Z',
-	'time_update_prev':'2017-06-06T07:21:02.855Z',
-	'time_update':'2017-06-06T07:21:10.687Z'
+    'time_prev':1498300851588,
+    'time':1498301007768,
+    'source':'tetra'
 	};
 
 request.post(

@@ -43,13 +43,8 @@ var appIo = require('socket.io')(http);
 
 //db_Init();
 
-
-
-var time_fullstate;
-//var time_fullstate_io;
-var time_update;
-//var time_update_io;
-
+let time_update;
+let strsource='tetra';
 
 appExp.use(express.static(path.join(__dirname, 'public'), {
   dotfiles: 'ignore',
@@ -90,29 +85,15 @@ appExp.post('/publish-fullstate', jsonParser, function(req, res) {
 //  res.send('Ok Got a POST request');
   
   let obj = req.body;
-//  obj.time_fullstate = new Date(obj.time_fullstate);
-//  obj["time_fullstate"] = new Date(obj.time_fullstate);
-  // console.log( "obj.time_fullstate" );
-  // console.log( obj.time_fullstate );
-  // // console.log( "obj.time_fullstate.getTime()" );
-  // // console.log( obj.time_fullstate.getTime() );
-  // console.log( "obj.time_fullstate + 1" );
-  // console.log( obj.time_fullstate + 1 );
-  time_fullstate = new Date(obj.time_fullstate);
-
-  time_update = time_fullstate;
-//  console.log( 'obj.steps ' );
-//  console.log( obj.steps );
-
-//  console.log( 'obj.cars ' );
-//  console.log( obj.cars );
-
-//  db.set('steps', obj.steps ).write();
-//  db.set('cars', obj.cars ).write();
   let cars = obj.cars;
-  // Object.keys(cars).forEach( carid => {
-  //   cars[carid]["time_update"] = time_update;
-  // });
+
+  if (obj.source!=strsource) {
+    return;
+  };
+  // time_update = new Date();
+  // time_update.setTime(obj.time);
+  time_update = obj.time;
+  
   
   db.set('steps', obj.steps ).value();
   db.set('cars', cars ).value();
@@ -136,48 +117,17 @@ appExp.post('/publish-update', jsonParser, function(req, res) {
   
   let obj = req.body;
 
-  // // obj.time_fullstate = new Date(obj.time_fullstate);
-  // // obj.time_update_prev = new Date(obj.time_update_prev);
-  // // obj.time_update = new Date(obj.time_update);
-  // obj["time_fullstate"] = new Date(obj.time_fullstate);
-  // obj["time_update_prev"] = new Date(obj.time_update_prev);
-  // obj["time_update"] = new Date(obj.time_update);
-  let new_time_fullstate = new Date(obj.time_fullstate);
-  let new_time_update_prev = new Date(obj.time_update_prev);
-  let new_time_update = new Date(obj.time_update);
-
-  // console.log( "new_time_fullstate" );
-  // console.log( new_time_fullstate);
-  // console.log( "time_fullstate" );
-  // console.log( time_fullstate );
-
-  // console.log( "new_time_fullstate==time_fullstate" );
-  // console.log( new_time_fullstate==time_fullstate );
-  // console.log( "new_time_fullstate-time_fullstate" );
-  // console.log( new_time_fullstate-time_fullstate );
-
-//  if ( ! (new_time_fullstate==time_fullstate) ) {
-  if ( ! (new_time_fullstate-time_fullstate == 0) ) {
-    //need fullstate
-    res.status(400);
-    res.send('Not new_time_fullstate==time_fullstate');
+  if (obj.source!=strsource) {
     return;
   };
-  // console.log( "new_time_update_prev" );
-  // console.log( new_time_update_prev );
-  // console.log( "time_update" );
-  // console.log( time_update );
-//  if ( ! (new_time_update_prev==time_update) ) {
-  if ( ! (new_time_update_prev - time_update == 0) ) {
+
+  if ( ! (obj.time_prev - time_update == 0) ) {
     //need fullstate
     res.status(400);
     res.send('Not new_time_update_prev==time_update');
     return;
   };
-  time_update = new_time_update;
-//  console.log( "before" );
-  let time_update_ms = time_update.getTime();
-//  console.log( "after" );
+  time_update = obj.time;
 
   let cars = obj.cars;
   // Object.keys(cars).forEach( carid => {
@@ -191,8 +141,7 @@ appExp.post('/publish-update', jsonParser, function(req, res) {
     let car = cars[carid];
     console.log( carid );
     if (car) {
-//      car["time_update"] = time_update;
-      car["time_update"] = time_update_ms;
+      car["time_update"] = time_update;
       db_cars.set( carid, car ).value();
     }else{
 //      db_cars.remove( { id: car.id } ).value();
