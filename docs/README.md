@@ -1,16 +1,16 @@
 # pulltablo
 
-Приложение отображает в виде таблицы распределение автомобилей в сервисном центре по этапам обслуживания (колонкам таблицы). 
+The application displays in the form of a table the distribution of cars in the service center by the service stages (columns of the table).
 
-Вместо неоптимальной арихитектуры "получать периодически состояние всех автомобилей и отобразить" использована архитектура "частичные изменения отображения при изменние состояния одного автомобиля".
+Instead of a unoptimal architecture "get periodically the state of all cars and display" the architecture is used "partial display changes when the state of one car changes."
 
-Приложение использует react, redux, reselect, reselect-map, nodejs, socket.io.
+The application uses react, redux, reselect, reselect-map, nodejs, socket.io.
 
-Используются WebSocket: изменения проталкиваются (push) в браузер, когда происходят.
+WebSocket is used: changes are pushed to the browser when they occur.
 
-Испольузется React, reselect: перересовываются только измененые элементы страницы. 
+It is used React, reselect: only the changed elements of the page are resized.
 
-При измененние по одному автомобилю (автомобиль из этапа "Мойка" перешел в этап "Выполнение работ (ожидание)"), будут перерисованы только столбцы "Мойка" и "Выполнение работ (ожидание)".
+If you change one car (the car from the "Washing" step has moved to the "Execution of work (waiting)"), only the columns "Wash" and "Execution of work (waiting)" will be redrawn.
 
 <p align="center">
 <img src="./img/animtable.gif"/>
