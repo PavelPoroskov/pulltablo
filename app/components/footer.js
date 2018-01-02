@@ -5,12 +5,12 @@ const Footer = () => (
     <p>
         Show:
         {" "}
-        <FilterLink filter="/priemka">
-            Priemka
+        <FilterLink filter="/inspection">
+            Inspection
         </FilterLink>
         {", "}
-        <FilterLink filter="/washing">
-            Washing
+        <FilterLink filter="/wash">
+            Wash
         </FilterLink>
         {", "}
         <FilterLink filter="/">

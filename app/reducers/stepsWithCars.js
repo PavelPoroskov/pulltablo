@@ -40,7 +40,8 @@ const calculateSumChanges = ( objStepIdWithCarIds, objChanges ) => {
     .map( carid => ({
       carid, 
       stepid: objChanges[carid] ? objChanges[carid].stepid : false,
-      sort: objChanges[carid] ? objChanges[carid].timestamp : 0
+//      sort: objChanges[carid] ? objChanges[carid].timestamp : 0
+      sort: objChanges[carid] ? objChanges[carid].time_update : 0
     }) );
 
   // let newStepIds = { ...(arrCarChanges.filter( obj => obj.stepid )

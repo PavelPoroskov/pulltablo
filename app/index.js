@@ -19,7 +19,7 @@ import App from './containers/App';
 import reducer from './reducers';
 
 let curFilter = '';
-if (location.pathname in { '/':'', '/priemka':'', '/washing':'' } ) {
+if (location.pathname in { '/':'', '/inspection':'', '/wash':'' } ) {
 //	console.log('location.pathname 2', location.pathname );
 	curFilter = location.pathname;
 }

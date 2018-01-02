@@ -93,6 +93,9 @@ appExp.post('/publish-fullstate', jsonParser, function(req, res) {
   // time_update = new Date();
   // time_update.setTime(obj.time);
   time_update = obj.time;
+  Object.keys(cars).forEach( carid => {
+    cars[carid]["time_update"] = time_update;
+  });
   
   
   db.set('steps', obj.steps ).value();

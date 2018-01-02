@@ -2,7 +2,7 @@ var request = require('request');
 
 var payload = { 
 	'cars':{
-		'a001bc': { 'carid': 'a001bc', 'stepid':'02.0', 'timestamp': 1002 }
+		'a001bc': { 'carid': 'a001bc', 'stepid':'02.0' }
 		},
 	'time_prev':1498300809397,
 	'time':1498300851588,

@@ -37,9 +37,10 @@ export const selColumnHead = createSelector(
 	selColumnHead0,
 	(filter,steps) => {
 		console.log("selColumnHead filter=", filter);
-		if (filter=='/washing') {
+		if (filter=='/wash') {
 			return steps.filter( step => step.stepid in setFilterWashing );
-		}else if (filter=='/priemka') {
+//		}else if (filter=='/priemka') {
+		}else if (filter=='/inspection') {
 //			return steps.filter( step => step.stepid in setFilterPriemka );
 			return steps
 		}else if (filter=='/') {
@@ -64,7 +65,7 @@ const selStepsWithCars = createSelector(
 	selStepsWithCars0,
 	(filter,steps) => {
 		console.log("selStepsWithCars filter=", filter);
-		if (filter=='/washing') {
+		if (filter=='/wash') {
 			
       let newObj = Object.keys(steps)
         .filter( stepid => stepid in setFilterWashing )
@@ -74,7 +75,7 @@ const selStepsWithCars = createSelector(
         }, {} );
 
 			return newObj;
-		}else if (filter=='/priemka') {
+		}else if (filter=='/inspection') {
 			return steps
 		}else if (filter=='/') {
 			return steps

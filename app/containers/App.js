@@ -16,7 +16,7 @@ const App = ({heads,columns,isConnected,cars,strColumnsFilter}) => {
   //  const CSSDisConnected = isConnected ? "Connected" : "Disconnected";
   //    <MyTable steps={heads} columns={columns} cars={cars}/>
   //    <Route path='["/priemka","/washing","/"]' render={(props) => {
- let classNameDivTable = strColumnsFilter=='/washing' ? "Washing" : "NotWashing";
+ let classNameDivTable = strColumnsFilter=='/wash' ? "Washing" : "NotWashing";
 
   return (
     <div className={isConnected ? "Connected" : "Disconnected"}>

@@ -3,7 +3,6 @@
 import strColumnsFilter from './strColumnsFilter'
 import stepsById from './stepsById'
 import autosById from './autosById'
-import emptyCell from './emptyCell'
 import stepsWithCars from './stepsWithCars'
 import isConnected from './isConnected'
 
