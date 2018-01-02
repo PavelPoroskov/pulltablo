@@ -4,7 +4,7 @@ The application displays in the form of a table the distribution of cars in the 
 
 Instead of a unoptimal architecture "get periodically the state of all cars and display" the architecture is used "partial display changes when the state of one car changes."
 
-The application uses react, redux, reselect, reselect-map, nodejs, socket.io.
+The application uses **react**, **redux**, **reselect**, **reselect-map**, **nodejs**, **socket.io**.
 
 WebSocket is used: changes are pushed to the browser when they occur.
 
