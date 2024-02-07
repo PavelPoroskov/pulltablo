@@ -1,7 +1,6 @@
 public/js/
 node_modules/
-result.db.json
-test.db.json
+db.json
 cmd.bat
 cmdK.bat
 Send_1c_http.epf

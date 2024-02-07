@@ -1,7 +1,7 @@
 import React from 'react'
-import { render } from 'react-dom'
 
-import { createStore, applyMiddleware } from 'redux';
+// import { createStore, applyMiddleware } from 'redux';
+import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux';
 
 
@@ -23,7 +23,7 @@ if (location.pathname in { '/':'', '/inspection':'', '/wash':'' } ) {
 //	console.log('location.pathname 2', location.pathname );
 	curFilter = location.pathname;
 }
-let preloadedStat = {
+let preloadedState = {
 	strColumnsFilter: curFilter,
   stepsById: [],
   autosById: {},
@@ -31,8 +31,13 @@ let preloadedStat = {
   isConnected: false,
 };
 
-let store = createStore(reducer, preloadedStat, applyMiddleware(socketIoMiddleware) );
-
+//let store = createStore(reducer, preloadedStat, applyMiddleware(socketIoMiddleware) );
+const store = configureStore({
+  reducer,
+  preloadedState,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketIoMiddleware),
+  // enhancer? 
+})
 
 socket.on('disconnect', function (data) {	
 	store.dispatch({type:'disconnected'});
@@ -42,9 +47,12 @@ socket.on('disconnect', function (data) {
 
 store.dispatch({type:'server/subscribe'});
 
-render(
-  <Provider store={store}>
-   	<App />
-  </Provider>,
-  document.getElementById('root')
-)
+function AppConnected() {
+  return (
+    <Provider store={store}>
+   	  <App />
+    </Provider>
+  )
+};
+
+export default AppConnected;

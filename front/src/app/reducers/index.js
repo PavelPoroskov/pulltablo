@@ -6,14 +6,15 @@ import autosById from './autosById'
 import stepsWithCars from './stepsWithCars'
 import isConnected from './isConnected'
 
-const rootReducer = combineReducers({
-	strColumnsFilter,
+//const rootReducer = combineReducers({
+const rootReducer = {
+    strColumnsFilter,
   stepsById,
   autosById,
 //  emptyCell,
   stepsWithCars,
   isConnected,
-})
+}
 
 
 export default rootReducer

@@ -13,22 +13,30 @@
 *
 */
 export default function createSocketIoMiddleware(socket, criteria = [],
-  { eventName = 'action', execute = defaultExecute } = {}) {
+  { eventName = 'action', execute } = {}) {
+
+  function defaultExecute(action, emit, next, dispatch) { // eslint-disable-line no-unused-vars
+    emit(eventName, action);
+    return next(action);
+  }
+  
   const emitBound = socket.emit.bind(socket);
+  const fnExecute = execute || defaultExecute;
+  
   return ({ dispatch }) => {
     // Wire socket.io to dispatch actions sent by the server.
     socket.on(eventName, dispatch);
     
     return next => (action) => {
       if (evaluate(action, criteria)) {
-        return execute(action, emitBound, next, dispatch);
+        return fnExecute(action, emitBound, next, dispatch);
       }
       return next(action);
     };
   };
 
   function evaluate(action, option) {
-    if (!action || !action.type) {
+    if (!action?.type) {
       return false;
     }
 
@@ -45,10 +53,5 @@ export default function createSocketIoMiddleware(socket, criteria = [],
       matched = option.some(item => type.indexOf(item) === 0);
     }
     return matched;
-  }
-
-  function defaultExecute(action, emit, next, dispatch) { // eslint-disable-line no-unused-vars
-    emit(eventName, action);
-    return next(action);
   }
 }
