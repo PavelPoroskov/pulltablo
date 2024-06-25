@@ -19,7 +19,7 @@
     "redux": "^5.0.1",
     "reselect": "^4.1.8",
     "reselect-map": "^1.0.6",
-    "socket.io-client": "^4.7.4"
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
